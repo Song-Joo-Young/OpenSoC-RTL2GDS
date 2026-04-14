@@ -19,6 +19,7 @@ export YOSYS_EXE="$ORFS/tools/install/yosys/bin/yosys"
 export OPENROAD_EXE="/usr/bin/openroad"
 export KLAYOUT_CMD="/usr/local/bin/klayout"
 export EQUIVALENCE_CHECK=0
+export QT_QPA_PLATFORM=offscreen
 
 # OpenRAM
 export OPENRAM_HOME="$PROJECT_ROOT/tools/OpenRAM/compiler"

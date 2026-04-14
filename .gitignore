@@ -36,6 +36,9 @@ venv/
 .vscode/
 .idea/
 
+# 참고 프로젝트 (별도 관리)
+sram-lib-gen/
+
 # 임시 파일
 *.log
 *.tmp
