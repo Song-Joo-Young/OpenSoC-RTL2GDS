@@ -39,6 +39,9 @@ venv/
 # 참고 프로젝트 (별도 관리)
 sram-lib-gen/
 
+# PDF (학습 자료, git에 올리지 않음)
+*.pdf
+
 # 임시 파일
 *.log
 *.tmp

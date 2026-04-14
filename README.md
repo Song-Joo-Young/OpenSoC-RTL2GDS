@@ -132,7 +132,8 @@ sram-lib-gen/     OpenRAM SRAM generation example (reference, not tracked)
 
 | 문서 | 내용 |
 |------|------|
-| [Getting Started](docs/getting_started.md) | 처음부터 끝까지 설치 + 첫 GDS 가이드 |
+| [Training Guide](docs/training_guide.md) | Step-by-step 실습: RTL 작성부터 GDS까지 따라하기 |
+| [Getting Started](docs/getting_started.md) | 환경 구축 + 첫 GDS 가이드 |
 | [Tool Analysis](docs/tool_analysis.md) | OpenROAD / ORFS / OpenRAM 내부 구조 분석 |
 | [Progress Log](docs/progress.md) | Phase별 결과 수치 및 실행 명령 |
 | [Evaluation](docs/evaluation.md) | 독립 평가 결과 및 개선 권장사항 |
