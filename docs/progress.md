@@ -102,3 +102,29 @@ make DESIGN_CONFIG=./designs/sky130hd/gcd/config.mk \
 | Area | ~1600 µm² |
 | Total Power | 0.663mW |
 | GDS | 750KB |
+
+---
+
+## Phase 4: PicoRV32 RISC-V Core
+- **시작일**: 2026-04-14
+- **상태**: Complete
+
+### Design
+- PicoRV32: 오픈소스 RISC-V RV32IMC CPU (YosysHQ, MIT license)
+- 3049 lines RTL
+
+### SKY130 결과
+| Metric | Value |
+|--------|-------|
+| Clock period | 10.0ns (100MHz) |
+| Slack | +4.750ns |
+| Area | 102,600 µm² (49% util) |
+| Endpoints | 3,274 |
+| Total Power | 16.0mW |
+| GDS | 12MB |
+
+### Key Observations
+- 실제 RISC-V CPU의 full RTL-to-GDS 달성
+- timing met with significant positive slack (+4.75ns)
+- Power: Sequential 47%, Clock 43%, Combinational 10%
+- clock power가 높은 이유: 3274개 FF에 clock tree 분배
