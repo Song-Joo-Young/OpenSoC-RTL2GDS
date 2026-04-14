@@ -18,6 +18,9 @@ tools/OpenRAM/
 tools/*/build/
 tools/*/install/
 
+# Verilator build outputs
+designs/*/build/
+
 # Python
 *.pyc
 __pycache__/
