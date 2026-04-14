@@ -128,3 +128,33 @@ make DESIGN_CONFIG=./designs/sky130hd/gcd/config.mk \
 - timing met with significant positive slack (+4.75ns)
 - Power: Sequential 47%, Clock 43%, Combinational 10%
 - clock power가 높은 이유: 3274개 FF에 clock tree 분배
+
+---
+
+## Phase 5: SoC + SRAM (OpenRAM)
+- **시작일**: 2026-04-14
+- **상태**: Complete
+
+### Design
+- PicoRV32 (RV32I, barrel shifter) + sky130_sram_1rw1r_64x256_8 (2KB)
+- 간단한 address decoder + GPIO peripheral
+- SRAM macro: ORFS pre-built sky130ram 사용
+
+### SKY130 결과
+| Metric | Value |
+|--------|-------|
+| Clock period | 20.0ns (50MHz) |
+| Slack | +7.022ns |
+| Area | 544,466 µm² (33% util) |
+| Endpoints | 3,257 |
+| Total Power | 18.2mW |
+| - Macro (SRAM) | 9.16mW (50.4%) |
+| - Clock | 4.21mW (23.2%) |
+| - Sequential | 3.41mW (18.7%) |
+| GDS | 32MB |
+| Antenna violations | 5 net, 8 pin |
+
+### Key Observations
+- SRAM macro가 전체 power의 50% 차지
+- macro placement 자동화 성공 (halo/channel 설정)
+- 32MB GDS — SRAM cell 데이터가 대부분
