@@ -20,6 +20,13 @@ tools/*/install/
 
 # Verilator build outputs
 designs/*/build/
+training/*/build/
+**/build/Vcounter*
+**/build/Valu*
+**/build/*.o
+**/build/*.a
+**/build/*.d
+**/build/*.mk
 
 # Python
 *.pyc
