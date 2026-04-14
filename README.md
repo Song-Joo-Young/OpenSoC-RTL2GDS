@@ -52,6 +52,19 @@ make DESIGN_CONFIG=./designs/sky130hd/gcd/config.mk
 | OpenRAM | v1.2 | SRAM macro compiler | [VLSIDA/OpenRAM](https://github.com/VLSIDA/OpenRAM) |
 | PicoRV32 | latest | RISC-V RV32IMC CPU (Phase 4-5) | [YosysHQ/picorv32](https://github.com/YosysHQ/picorv32) |
 
+### RTL-to-GDS Flows 비교
+
+| Flow | 특징 | Repository |
+|------|------|------------|
+| **ORFS** (이 프로젝트) | Makefile 기반, 개별 단계 제어 가능, 학습/커스터마이징에 적합 | [OpenROAD-flow-scripts](https://github.com/The-OpenROAD-Project/OpenROAD-flow-scripts) |
+| **OpenLane 1** | Tcl 기반 자동화, DRC/LVS 내장, Google MPW tapeout 실적 다수, 현재 maintenance mode | [OpenLane](https://github.com/The-OpenROAD-Project/OpenLane) |
+| **OpenLane 2** | Python 기반 모듈 아키텍처, Step/Flow 추상화, Nix 패키징, OpenLane 1 후속 | [openlane2](https://github.com/efabless/openlane2) |
+
+> **이 프로젝트와 OpenLane의 관계**: 이 프로젝트는 ORFS를 직접 사용하여 flow의 각 단계를
+> 수동으로 이해하고 구축하는 것이 목적입니다. OpenLane은 동일한 도구(OpenROAD, Yosys, Magic, Netgen)를
+> 사용하지만 DRC/LVS까지 자동화된 완성형 flow입니다.
+> 향후 이 프로젝트의 디자인을 OpenLane으로 마이그레이션하여 DRC clean + LVS pass를 확보하는 것이 다음 목표입니다.
+
 ### SoC Frameworks (참고/확장용)
 
 | Framework | Purpose | Repository |
@@ -60,7 +73,6 @@ make DESIGN_CONFIG=./designs/sky130hd/gcd/config.mk
 | Rocket Chip | RISC-V CPU generator (Chipyard 핵심 컴포넌트) | [chipsalliance/rocket-chip](https://github.com/chipsalliance/rocket-chip) |
 | PULP Platform | 저전력 RISC-V SoC (SystemVerilog 기반) | [pulp-platform/pulpissimo](https://github.com/pulp-platform/pulpissimo) |
 | LiteX | Python 기반 FPGA SoC builder | [enjoy-digital/litex](https://github.com/enjoy-digital/litex) |
-| OpenLane | RTL-to-GDS flow (efabless/Google) | [The-OpenROAD-Project/OpenLane](https://github.com/The-OpenROAD-Project/OpenLane) |
 
 ### PDK
 
