@@ -42,6 +42,7 @@ make DESIGN_CONFIG=./designs/sky130hd/gcd/config.mk
 |------|---------|---------|------------|
 | Yosys | 0.63 | RTL Synthesis | [YosysHQ/yosys](https://github.com/YosysHQ/yosys) |
 | OpenROAD | v2.0 | Floorplan / Place / CTS / Route | [The-OpenROAD-Project/OpenROAD](https://github.com/The-OpenROAD-Project/OpenROAD) |
+| OpenSTA | 2.6.0 | Static Timing Analysis (standalone) | [The-OpenROAD-Project/OpenSTA](https://github.com/The-OpenROAD-Project/OpenSTA) |
 | ORFS | b811251d2 | Automated RTL-to-GDS flow scripts | [The-OpenROAD-Project/OpenROAD-flow-scripts](https://github.com/The-OpenROAD-Project/OpenROAD-flow-scripts) |
 | KLayout | 0.29.7 | GDS viewer / DEF-to-GDS conversion | [KLayout/klayout](https://github.com/KLayout/klayout) |
 | Magic | 8.3.636 | DRC (Design Rule Check) | [RTimothyEdwards/magic](https://github.com/RTimothyEdwards/magic) |
