@@ -57,3 +57,48 @@ make DESIGN_CONFIG=./designs/sky130hd/gcd/config.mk \
   KLAYOUT_CMD=/usr/local/bin/klayout \
   EQUIVALENCE_CHECK=0
 ```
+
+---
+
+## Phase 2: Custom RTL (Counter) → GDS
+- **시작일**: 2026-04-14
+- **상태**: Complete
+
+### Design
+- Parameterized 8-bit up/down counter with load, enable, zero/max flags
+- Verilator simulation: PASS (22 cycles, 6 test cases)
+
+### SKY130 vs GF180 비교
+
+| Metric | SKY130 (130nm) | GF180 (180nm) |
+|--------|---------------|---------------|
+| Clock period | 5.0ns (200MHz) | 10.0ns (100MHz) |
+| Slack | +2.093ns | +6.097ns |
+| Area | 865 µm² (54%) | 4795 µm² (49%) |
+| Total Power | 0.267mW | 5.86mW |
+| GDS size | 342KB | (DEF only) |
+
+### Key Observations
+- GF180은 180nm이므로 area 5.5x 더 큼
+- GF180 power 22x 더 높음 (공정+전압 차이)
+- 둘 다 timing met with positive slack
+
+---
+
+## Phase 3: ALU (timing closure 연습)
+- **시작일**: 2026-04-14
+- **상태**: Complete
+
+### Design
+- 8-bit pipelined ALU: ADD/SUB/AND/OR/XOR/NOT/SHR/SHL/SLT/SEQ
+- 2-stage pipeline (input register → ALU core → output register)
+- Verilator simulation: PASS (8 test cases)
+
+### SKY130 결과
+| Metric | Value |
+|--------|-------|
+| Clock period | 5.0ns (200MHz) |
+| Timing | met (positive slack) |
+| Area | ~1600 µm² |
+| Total Power | 0.663mW |
+| GDS | 750KB |
