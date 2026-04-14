@@ -15,6 +15,10 @@ export PDK="sky130A"
 
 # OpenROAD-flow-scripts
 export ORFS="$PROJECT_ROOT/tools/OpenROAD-flow-scripts"
+export YOSYS_EXE="$ORFS/tools/install/yosys/bin/yosys"
+export OPENROAD_EXE="/usr/bin/openroad"
+export KLAYOUT_CMD="/usr/local/bin/klayout"
+export EQUIVALENCE_CHECK=0
 
 # OpenRAM
 export OPENRAM_HOME="$PROJECT_ROOT/tools/OpenRAM/compiler"
@@ -22,6 +26,6 @@ export OPENRAM_TECH="$PROJECT_ROOT/tools/OpenRAM/technology"
 export PYTHONPATH="$OPENRAM_HOME:${PYTHONPATH:-}"
 
 echo "[env] PROJECT_ROOT=$PROJECT_ROOT"
-echo "[env] PDK_ROOT=$PDK_ROOT (PDK=$PDK)"
-echo "[env] ORFS=$ORFS"
+echo "[env] PDK=$PDK | ORFS=$ORFS"
+echo "[env] YOSYS=$YOSYS_EXE"
 echo "[env] tools → $LOCAL/bin"

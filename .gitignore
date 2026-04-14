@@ -7,6 +7,13 @@ pdk/
 *.spef
 *.calibre
 
+# 도구 (각각 자체 git repo — submodule 또는 별도 관리)
+tools/magic/
+tools/netgen/
+tools/open_pdks/
+tools/OpenROAD-flow-scripts/
+tools/OpenRAM/
+
 # 도구 빌드 산출물
 tools/*/build/
 tools/*/install/

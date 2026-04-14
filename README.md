@@ -11,8 +11,8 @@ Open-source RTL-to-GDS flow using SKY130 / GF180 PDK.
 
 | Phase | Description | Status |
 |-------|-------------|--------|
-| 0 | 환경 구축 (도구 + PDK + Git) | In Progress |
-| 1 | GCD 예제 → 첫 GDS | - |
+| 0 | 환경 구축 (도구 + PDK + Git) | Done |
+| 1 | GCD 예제 → 첫 GDS (904KB, sky130hd) | Done |
 | 2 | Custom RTL → GDS (SKY130 + GF180) | - |
 | 3 | ALU (timing closure 연습) | - |
 | 4 | PicoRV32 RISC-V core | - |
