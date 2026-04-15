@@ -4,6 +4,12 @@ source "$(dirname "$0")/design.cfg"
 cd "$ORFS_FLOW"
 
 echo "========== GDS 생성 =========="
+echo ""
+echo "입력:"
+echo "  DEF (배치+배선):  $RESULTS/6_final.def"
+echo "  셀 GDS:          platforms/$PLATFORM/gds/sky130_fd_sc_hd.gds"
+echo "  Tech file:       platforms/$PLATFORM/sky130hd.lyt"
+echo ""
 
 cat platforms/$PLATFORM/lef/sky130_fd_sc_hd.tlef \
     platforms/$PLATFORM/lef/sky130_fd_sc_hd_merged.lef \
@@ -21,14 +27,16 @@ klayout -zz \
 
 echo ""
 echo "========== 결과 파일 =========="
-echo "  [GDS]        $RESULTS/6_final.gds"
-ls -lh "$RESULTS/6_final.gds" 2>/dev/null | awk '{print "               → 크기: "$5}'
-echo "               → 제조용 최종 파일. 이걸 fab에 보내면 칩이 만들어짐"
-echo "  [입력 DEF]   $RESULTS/6_final.def"
-echo "               → 배치+배선 정보 (KLayout이 읽어서 GDS로 변환)"
-echo "  [입력 GDS]   platforms/$PLATFORM/gds/sky130_fd_sc_hd.gds"
-echo "               → standard cell 라이브러리 GDS (셀 도형 정보)"
+echo "  [GDS]  $RESULTS/6_final.gds"
+ls -lh "$RESULTS/6_final.gds" 2>/dev/null | awk '{print "         크기: "$5}'
+echo "         → fab에 보내는 최종 파일"
 echo ""
-echo "  GUI로 열기:  klayout $RESULTS/6_final.gds"
+echo "========== GUI로 확인 (꼭 해보세요!) =========="
+echo "  klayout $RESULTS/6_final.gds"
+echo ""
+echo "  KLayout에서 해볼 것:"
+echo "    - 줌인: 개별 셀(gate) 모양 관찰"
+echo "    - 레이어: met1(파랑), met2(보라), poly(빨강) 등 각 레이어 의미"
+echo "    - 줌아웃: 전체 칩 모양, PDN 스트랩, IO 핀 배치"
 echo ""
 echo "다음: bash 11_signoff.sh"
