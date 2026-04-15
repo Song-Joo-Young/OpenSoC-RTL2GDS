@@ -21,11 +21,12 @@ if [ ! -d magic ]; then
     git clone https://github.com/RTimothyEdwards/magic.git magic
 fi
 cd magic
-./configure --prefix="$LOCAL"
+make distclean 2>/dev/null || true
+./configure --prefix="$LOCAL" --without-tcl --without-opengl
 make -j"$NPROC"
 make install
 cd ..
-echo "[1/4] Magic installed: $(magic --version 2>&1 || echo 'check PATH')"
+echo "[1/4] Magic installed: $($LOCAL/bin/magic -dnull -noconsole <<< quit 2>&1 && echo 'OK' || echo 'check build')"
 
 # --- Step 2: Netgen ---
 echo "[2/4] Building Netgen..."
@@ -33,8 +34,10 @@ if [ ! -d netgen ]; then
     git clone https://github.com/RTimothyEdwards/netgen.git netgen
 fi
 cd netgen
+make distclean 2>/dev/null || true
 ./configure --prefix="$LOCAL"
 make -j"$NPROC"
+mkdir -p "$LOCAL/lib/netgen/python"
 make install
 cd ..
 echo "[2/4] Netgen installed."
