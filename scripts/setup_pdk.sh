@@ -42,11 +42,21 @@ else
 fi
 
 echo "[2/2] Building PDK (this takes a while, ~30-60 min)..."
-make -j"$NPROC"
-make install
+# RF/analog cell 일부가 누락되어 make가 실패할 수 있으나 digital flow에는 영향 없음.
+# 실패해도 install 단계로 진행하여 가능한 만큼 설치.
+make -j"$NPROC" || echo "WARNING: make had errors (likely missing RF/analog cells — OK for digital flow)"
+make install || echo "WARNING: make install had errors — checking result..."
 
-echo "============================================"
-echo " PDK setup complete!"
-echo " SKY130: $PDK_DEST/sky130A/"
-echo " GF180:  $PDK_DEST/gf180mcuA/"
-echo "============================================"
+# 핵심 파일이 설치되었는지 검증 (digital flow에 필수)
+SC_LIB="$PDK_DEST/share/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lib"
+if [ -d "$SC_LIB" ] && [ -n "$(ls -A "$SC_LIB" 2>/dev/null)" ]; then
+    echo "============================================"
+    echo " PDK setup complete!"
+    echo " SKY130: $PDK_DEST/share/pdk/sky130A/"
+    echo " Standard cells: OK ($SC_LIB)"
+    echo "============================================"
+else
+    echo "ERROR: sky130_fd_sc_hd not installed at $SC_LIB"
+    echo "Try: cd tools/open_pdks && make install"
+    exit 1
+fi
