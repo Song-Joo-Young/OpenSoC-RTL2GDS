@@ -1,19 +1,22 @@
 #!/bin/bash
-# Part 10: Routing — 금속선 연결
-source ../../env.sh
-cd $ORFS/flow
+# Step 8: Routing — 금속선 연결
+source "$(dirname "$0")/design.cfg"
+cd "$ORFS_FLOW"
 
-# ORFS 호환성 workaround
-mkdir -p reports/sky130hd/counter4/base
-touch reports/sky130hd/counter4/base/congestion.rpt
+# ORFS congestion.rpt workaround
+mkdir -p "$REPORTS"
+touch "$REPORTS/congestion.rpt"
 
 echo "========== Routing =========="
-make DESIGN_CONFIG=./designs/sky130hd/counter4/config.mk route
+$MAKE_CMD route
 
 echo ""
-echo "========== Routing 리포트 (타이밍/파워) =========="
-cat reports/sky130hd/counter4/base/5_global_route.rpt 2>/dev/null | \
-  grep -A20 "report_power\|report_design_area\|slack\|report_wns\|report_tns"
+echo "========== Routing 결과 (타이밍/면적/파워) =========="
+echo "파일: $REPORTS/5_global_route.rpt"
+echo ""
+grep -A2 "report_design_area\|worst slack\|report_wns\|report_tns" "$REPORTS/5_global_route.rpt" 2>/dev/null
+echo ""
+grep -A15 "report_power" "$REPORTS/5_global_route.rpt" 2>/dev/null
 
 echo ""
 echo "다음: bash 09_sta_post.sh"

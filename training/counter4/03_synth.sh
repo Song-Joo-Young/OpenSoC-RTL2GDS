@@ -1,18 +1,19 @@
 #!/bin/bash
-# Part 5: Synthesis — RTL을 게이트로 변환
-source ../../env.sh
-cd $ORFS/flow
+# Step 3: Synthesis — RTL을 게이트로 변환
+source "$(dirname "$0")/design.cfg"
+cd "$ORFS_FLOW"
 
 echo "========== Synthesis =========="
-make DESIGN_CONFIG=./designs/sky130hd/counter4/config.mk synth
+$MAKE_CMD synth
 
 echo ""
 echo "========== 합성 통계 =========="
-cat reports/sky130hd/counter4/base/synth_stat.txt
+cat "$REPORTS/synth_stat.txt"
 
 echo ""
 echo "========== 넷리스트 (앞 30줄) =========="
-head -30 results/sky130hd/counter4/base/1_synth.v
+echo "파일: $RESULTS/1_synth.v"
+head -30 "$RESULTS/1_synth.v"
 
 echo ""
 echo "다음: bash 04_sta.sh"
