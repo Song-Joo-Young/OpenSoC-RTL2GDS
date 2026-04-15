@@ -22,11 +22,19 @@ if [ -f "$RESULTS/6_final.spice" ]; then
       "\$PDK_ROOT/share/pdk/sky130A/libs.tech/netgen/sky130A_setup.tcl" \
       "$REPORTS/lvs_result.log"
     echo ""
-    tail -20 "$REPORTS/lvs_result.log"
+    tail -5 "$REPORTS/lvs_result.log"
 else
-    echo "SPICE 넷리스트 없음 — Magic extraction 필요 (생략)"
+    echo "  SPICE 넷리스트 없음 — Magic extraction 필요 (생략)"
 fi
 
+echo ""
+echo "========== 결과 파일 =========="
+echo "  [DRC 입력]    $RESULTS/6_final.gds"
+echo "                → DRC는 GDS를 직접 읽어서 공정 규칙 검사"
+echo "  [LVS 입력 1]  $RESULTS/6_final.spice (layout netlist)"
+echo "  [LVS 입력 2]  $RESULTS/6_final.v (schematic netlist)"
+echo "  [LVS 결과]    $REPORTS/lvs_result.log"
+echo "                → 'Circuits match uniquely' = PASS"
 echo ""
 echo "=========================================="
 echo "  전체 RTL-to-GDS flow 완료!"

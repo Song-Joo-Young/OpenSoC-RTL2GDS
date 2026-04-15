@@ -11,12 +11,14 @@ echo "========== Routing =========="
 $MAKE_CMD route
 
 echo ""
-echo "========== Routing 결과 (타이밍/면적/파워) =========="
-echo "파일: $REPORTS/5_global_route.rpt"
-echo ""
-grep -A2 "report_design_area\|worst slack\|report_wns\|report_tns" "$REPORTS/5_global_route.rpt" 2>/dev/null
-echo ""
-grep -A15 "report_power" "$REPORTS/5_global_route.rpt" 2>/dev/null
-
+echo "========== 결과 파일 =========="
+echo "  [Route ODB]      $RESULTS/5_route.odb"
+echo "                   → 라우팅 완료된 설계 데이터베이스"
+echo "  [Global Route]   $REPORTS/5_global_route.rpt"
+echo "                   → ★ 핵심 리포트: timing slack, area, power, DRC"
+echo "  [Route DRC]      $REPORTS/5_route_drc.rpt"
+echo "                   → 라우팅 DRC 위반 (0이어야 정상)"
+echo "  [Antenna]        $REPORTS/drt_antennas.log"
+echo "                   → antenna rule 위반 (0이어야 정상)"
 echo ""
 echo "다음: bash 09_sta_post.sh"
