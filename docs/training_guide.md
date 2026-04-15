@@ -13,13 +13,13 @@
 왜?
 
 ```
-[❌ 한 번에 돌리기]  make DESIGN_CONFIG=...
+[X 한 번에 돌리기]  make DESIGN_CONFIG=...
   → 30초 후 GDS 나옴
   → 그런데 synth가 어떤 셀을 쓰는지, floorplan 크기가 어떻게 결정되는지,
     CTS가 왜 필요한지, timing slack이 뭔지... 전혀 이해 못함
   → 디버깅 불가능
 
-[✓ 단계별 돌리기]   make ... synth  →  cat synth_stat.txt
+[O 단계별 돌리기]   make ... synth  →  cat synth_stat.txt
                     make ... floorplan  →  DEF 열어보기
                     make ... place  →  위치 확인
                     ...
@@ -321,9 +321,7 @@ Enable=0 hold: OK (count=4)
 === ALL TESTS PASSED ===
 ```
 
-> **여기서 멈추고 확인하세요!**
-> Sim이 PASS가 아니면 RTL에 버그가 있는 것입니다.
-> GDS까지 가봤자 의미 없으니 여기서 반드시 수정하세요.
+> Sim이 PASS가 아니면 RTL에 버그가 있는 것이므로 여기서 수정 후 진행.
 
 ---
 
@@ -398,7 +396,7 @@ cat reports/sky130hd/counter4/base/synth_stat.txt
 ```
 === counter4 ===
    Number of cells:          11
-   sky130_fd_sc_hd__dfrtp_1       4    ← D-FF with async reset (4-bit register!)
+   sky130_fd_sc_hd__dfrtp_1       4    ← D-FF with async reset (4-bit register)
    sky130_fd_sc_hd__ha_1          1    ← half adder
    sky130_fd_sc_hd__mux2_2        1    ← enable mux
    sky130_fd_sc_hd__xnor2_1       2    ← adder 로직
@@ -456,7 +454,7 @@ report_wns
 STASCRIPT
 ```
 
-### 6-2. 결과 해석 — 핵심!
+### 6-2. 결과 해석
 
 출력 끝부분:
 ```
@@ -476,7 +474,7 @@ FF/Q (0.42ns) → half adder (0.30ns) → mux (0.30ns) → FF/D
 ```
 → "adder와 mux가 타이밍의 병목이구나"를 알 수 있음.
 
-### 6-3. 실험해보기 (선택, 추천)
+### 6-3. 실험해보기 (optional)
 
 SDC를 바꿔서 clock period를 극단적으로 줄여보세요:
 ```tcl
@@ -663,7 +661,7 @@ read_liberty platforms/sky130hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
 read_verilog results/sky130hd/counter4/base/6_final.v
 link_design counter4
 read_sdc designs/sky130hd/counter4/constraint.sdc
-read_spef results/sky130hd/counter4/base/6_final.spef    ← 핵심!
+read_spef results/sky130hd/counter4/base/6_final.spef
 
 puts "=== Post-Route Setup ==="
 report_checks -path_delay max -format full_clock_expanded
@@ -774,7 +772,7 @@ make DESIGN_CONFIG=./designs/sky130hd/counter4/config.mk
 Part 3~13에서 각 단계의 **입력/출력/의미**를 이해했으므로, 에러가 나도 어느 단계에서 문제인지 바로 안다.
 처음부터 한 번에 돌리면 블랙박스가 됩니다 — 학습이 아니라 "돌려보기"에 그침.
 
-### 14-2. 타이밍 실험 (필수 추천)
+### 14-2. 타이밍 실험
 
 clock period를 줄여가면서 한계를 찾아보세요:
 ```tcl
@@ -849,7 +847,7 @@ python3 -m openlane config.json
 - [ ] Part 11: Post-Route STA — SPEF 포함 최종 slack 확인
 - [ ] Part 12: GDS 파일 생성됨 (`6_final.gds`)
 - [ ] Part 13: DRC clean, LVS pass
-- [ ] Part 14: `make` 한 번으로 전체 돌려보기 (이제 각 단계 이해 완료!)
+- [ ] Part 14: `make` 한 번으로 전체 돌려보기
 
 ---
 
