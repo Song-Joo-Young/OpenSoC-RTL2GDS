@@ -153,14 +153,48 @@ source env.sh
 ### 2-5. 검증
 
 ```bash
-# 각 도구가 실행되는지 확인
-$YOSYS_EXE -V                    # Yosys 0.63 (...)
-openroad -version                 # v2.0-XXXXX
-echo "quit" | magic -d null     # (non-Tcl build: 아무 에러 없이 종료)
-netgen                            # Netgen 1.5...
-verilator --version               # Verilator 5.XXX
-klayout -v                        # KLayout 0.29.X
+$YOSYS_EXE -V                     # Yosys 0.63 (...)
+openroad -version                  # v2.0-XXXXX
+magic --version                    # 8.3.XXX
+verilator --version                # Verilator 5.XXX
+klayout -v                         # KLayout 0.29.X
 ```
+
+### 2-6. 스크립트 방식 (권장)
+
+이 가이드의 모든 단계는 `training/counter4/` 디렉토리의 **번호별 스크립트**로 실행합니다.
+디렉토리 이동 없이 한 곳에서 전부 수행:
+
+```bash
+cd training/counter4/
+
+bash 00_clean.sh        # 결과 초기화
+bash 01_sim.sh          # Part 4: Simulation
+bash 02_setup_ORFS.sh   # Part 5 준비: ORFS에 디자인 등록
+bash 03_synth.sh        # Part 5: Synthesis (결과: 셀 통계 + 넷리스트)
+bash 04_sta.sh          # Part 6: Pre-Route STA (결과: slack)
+bash 05_floorplan.sh    # Part 7: Floorplan
+bash 06_place.sh        # Part 8: Placement
+bash 07_cts.sh          # Part 9: CTS
+bash 08_route.sh        # Part 10: Routing (결과: 타이밍/면적/파워)
+bash 09_sta_post.sh     # Part 11: Post-Route STA (SPEF 포함)
+bash 10_gds.sh          # Part 12: GDS 생성
+bash 11_signoff.sh      # Part 13: DRC/LVS
+bash 99_fullflow.sh     # Part 14: 전부 한 번에
+```
+
+**다른 디자인에 적용하려면**: `design.cfg`만 수정
+
+| 변수 | 의미 | 예시 |
+|------|------|------|
+| `DESIGN_NAME` | top module 이름 | `counter4` |
+| `RTL_FILELIST` | RTL filelist 경로 | `rtl.f` |
+| `TB_FILE` | 테스트벤치 | `tb/tb_counter4.cpp` |
+| `SDC_FILE` | 타이밍 제약 | `constraints/constraint.sdc` |
+| `CLOCK_PERIOD` | 클럭 주기 (ns) | `10.0` |
+| `LIB_FILES` | Liberty (.lib) | `platforms/.../sky130_fd_sc_hd__tt_025C_1v80.lib` |
+| `CORE_UTILIZATION` | 면적 utilization | `10` (소형), `40` (대형) |
+| `PLACE_DENSITY` | 배치 밀도 | `0.2` (소형), `0.6` (대형) |
 
 ---
 
@@ -332,12 +366,21 @@ export PLATFORM    = sky130hd
 export VERILOG_FILES = ./designs/src/$(DESIGN_NICKNAME)/counter4.v
 export SDC_FILE      = ./designs/$(PLATFORM)/$(DESIGN_NICKNAME)/constraint.sdc
 
-export CORE_UTILIZATION  = 40
+export CORE_UTILIZATION  = 10
+export PLACE_DENSITY     = 0.2
 export EQUIVALENCE_CHECK = 0
 EOF
 ```
 
+> **주의**: counter4처럼 작은 디자인은 `CORE_UTILIZATION=10`, `PLACE_DENSITY=0.2`로
+> 낮춰야 PDN(전원 네트워크) 단계에서 에러가 안 납니다.
+> 큰 디자인(PicoRV32 등)은 30~50%가 적절.
+
 ### 5-3. Synthesis 실행 (약 5초)
+
+**스크립트 방식**: `bash 03_synth.sh` (권장 — 결과도 자동 출력)
+
+또는 수동:
 
 ```bash
 cd $ORFS/flow

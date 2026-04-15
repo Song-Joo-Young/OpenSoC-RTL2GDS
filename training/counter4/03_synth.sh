@@ -11,9 +11,9 @@ echo "========== 합성 통계 =========="
 cat "$REPORTS/synth_stat.txt"
 
 echo ""
-echo "========== 넷리스트 (앞 30줄) =========="
-echo "파일: $RESULTS/1_synth.v"
-head -30 "$RESULTS/1_synth.v"
+echo "========== 결과 파일 =========="
+echo "  넷리스트:  $RESULTS/1_synth.v"
+echo "  합성 통계: $REPORTS/synth_stat.txt"
 
 echo ""
 echo "다음: bash 04_sta.sh"
