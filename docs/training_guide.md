@@ -126,7 +126,7 @@ source env.sh
 # 각 도구가 실행되는지 확인
 $YOSYS_EXE -V                    # Yosys 0.63 (...)
 openroad -version                 # v2.0-XXXXX
-magic -dnull -noconsole <<< quit  # (아무 에러 없이 종료)
+echo "quit" | magic -d null     # (non-Tcl build: 아무 에러 없이 종료)
 netgen                            # Netgen 1.5...
 verilator --version               # Verilator 5.XXX
 klayout -v                        # KLayout 0.29.X
@@ -448,12 +448,13 @@ klayout results/sky130hd/counter4/base/6_final.gds
 ```bash
 export PDK_ROOT=/home/jysong/PROJECT/pdk/share/pdk
 
-magic -dnull -noconsole -T sky130A << 'EOF'
+magic -d null -T sky130A << 'EOF'
 gds read results/sky130hd/counter4/base/6_final.gds
 load counter4
 select top cell
 drc check
 drc count
+quit
 EOF
 ```
 

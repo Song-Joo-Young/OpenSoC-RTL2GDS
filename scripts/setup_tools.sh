@@ -26,7 +26,7 @@ make distclean 2>/dev/null || true
 make -j"$NPROC"
 make install
 cd ..
-echo "[1/4] Magic installed: $($LOCAL/bin/magic -dnull -noconsole <<< quit 2>&1 && echo 'OK' || echo 'check build')"
+echo "[1/4] Magic installed: $([ -x $LOCAL/bin/magic ] && echo "OK ($LOCAL/bin/magic)" || echo 'FAILED')"
 
 # --- Step 2: Netgen ---
 echo "[2/4] Building Netgen..."

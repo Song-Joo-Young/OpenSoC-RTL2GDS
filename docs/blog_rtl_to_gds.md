@@ -442,12 +442,13 @@ klayout -zz \
 제조 공정의 물리적 규칙(최소 폭, 최소 간격 등)을 위반하지 않는지 검사합니다.
 
 ```bash
-magic -dnull -noconsole -T sky130A << 'EOF'
+magic -d null -T sky130A << 'EOF'
 gds read results/sky130hd/counter4/base/6_final.gds
 load counter4
 select top cell
 drc check
 drc count
+quit
 EOF
 ```
 

@@ -28,7 +28,7 @@ source env.sh
 $YOSYS_EXE -V                    # Yosys 0.63
 openroad -version                 # v2.0-16595
 sta -version                      # 2.6.0
-magic -dnull -noconsole <<< quit  # OK
+echo "quit" | magic -d null       # OK
 klayout -v                        # 0.29.7
 ```
 
@@ -266,12 +266,13 @@ klayout -zz \
 
 ```bash
 # DRC
-magic -dnull -noconsole -T sky130A << 'EOF'
+magic -d null -T sky130A << 'EOF'
 gds read results/sky130hd/counter4/base/6_final.gds
 load counter4
 select top cell
 drc check
 drc count
+quit
 EOF
 
 # LVS
