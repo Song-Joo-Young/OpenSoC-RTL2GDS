@@ -5,9 +5,8 @@
 export PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export LOCAL="$HOME/local"
 
-# PATH
+# PATH (LD_LIBRARY_PATH는 설정하지 않음 — 시스템 Qt와 충돌 방지)
 export PATH="$LOCAL/bin:$PATH"
-export LD_LIBRARY_PATH="$LOCAL/lib:${LD_LIBRARY_PATH:-}"
 
 # PDK
 export PDK_ROOT="$PROJECT_ROOT/pdk"
@@ -19,7 +18,8 @@ export YOSYS_EXE="$ORFS/tools/install/yosys/bin/yosys"
 export OPENROAD_EXE="/usr/bin/openroad"
 export KLAYOUT_CMD="/usr/local/bin/klayout"
 export EQUIVALENCE_CHECK=0
-export QT_QPA_PLATFORM=offscreen
+# QT_QPA_PLATFORM=offscreen 은 headless ORFS 실행 시에만 사용
+# GUI를 쓸 때는 설정하지 않는다
 
 # OpenRAM
 export OPENRAM_HOME="$PROJECT_ROOT/tools/OpenRAM/compiler"
