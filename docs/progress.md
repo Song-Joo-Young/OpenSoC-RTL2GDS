@@ -158,3 +158,34 @@ make DESIGN_CONFIG=./designs/sky130hd/gcd/config.mk \
 - SRAM macro가 전체 power의 50% 차지
 - macro placement 자동화 성공 (halo/channel 설정)
 - 32MB GDS — SRAM cell 데이터가 대부분
+
+---
+
+## Phase 6: 2x2 Systolic Array
+- **시작일**: 2026-04-15
+- **상태**: Complete
+
+### Design
+- 2x2 Systolic Array for matrix multiplication (8-bit input, 20-bit accumulator)
+- 4개 Processing Element (PE), 각각 multiply-accumulate (MAC)
+- Data flow: A left-to-right, B top-to-bottom (skewed input)
+- Verilator simulation: PASS ([[1,2],[3,4]]×[[5,6],[7,8]]=[[19,22],[43,50]])
+
+### SKY130 결과
+| Metric | Value |
+|--------|-------|
+| Clock period | 10.0ns (100MHz) |
+| Slack | +4.024ns |
+| Cells | 1,605 |
+| Area | 17,224 µm² (30% util) |
+| Endpoints | 328 |
+| Total Power | 7.73mW |
+| - Combinational | 6.13mW (79.4%) |
+| - Sequential | 0.85mW (11.0%) |
+| - Clock | 0.75mW (9.7%) |
+| GDS | 2.5MB |
+
+### Key Observations
+- Combinational power 79%: 4개 8x8 곱셈기가 지배적
+- AI accelerator 특성: 연산 로직 >> 레지스터
+- PicoRV32 대비 cells 절반이지만 power는 절반 수준

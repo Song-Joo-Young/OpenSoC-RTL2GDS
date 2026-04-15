@@ -12,6 +12,7 @@ Open-source RTL-to-GDS flow using SKY130 / GF180 PDK.
 | 3 | ALU 8-bit pipelined | sky130hd | ~1,600 µm² | 0.66mW | met | 750KB |
 | 4 | PicoRV32 (RV32I) | sky130hd | 102,600 µm² | 16.0mW | +4.75ns | 12MB |
 | 5 | PicoRV32 + SRAM 2KB | sky130hd | 544,466 µm² | 18.2mW | +7.02ns | 32MB |
+| 6 | 2x2 Systolic Array | sky130hd | 17,224 µm² | 7.73mW | +4.02ns | 2.5MB |
 
 ## Quick Start
 
@@ -133,6 +134,7 @@ sram-lib-gen/     OpenRAM SRAM generation example (reference, not tracked)
 
 | 문서 | 내용 |
 |------|------|
+| [Study Roadmap](docs/study_roadmap.md) | **시작점**: 이 프로젝트를 보는 순서 (Level 1~5) |
 | [Training Guide](docs/training_guide.md) | Step-by-step 실습: RTL 작성부터 GDS까지 따라하기 |
 | [Getting Started](docs/getting_started.md) | 환경 구축 + 첫 GDS 가이드 |
 | [Tool Analysis](docs/tool_analysis.md) | OpenROAD / ORFS / OpenRAM 내부 구조 분석 |
