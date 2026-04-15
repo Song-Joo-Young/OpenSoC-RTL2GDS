@@ -39,7 +39,7 @@ make DESIGN_CONFIG=./designs/sky130hd/gcd/config.mk
 **처음 설치 + 첫 GDS까지 총 1~2시간** (주로 PDK 설치).
 이후 새 디자인은 **수초~수분** (디자인 크기에 따라).
 
-자세한 설치 및 실행 방법은 [Getting Started Guide](docs/getting_started.md)를 참고하세요.
+자세한 설치 및 실행 방법은 [Training Guide](docs/training_guide.md) | 환경 구축 + 실습 (counter4 → GDS) |
 
 ## Tools & References
 
@@ -140,7 +140,7 @@ sram-lib-gen/     OpenRAM SRAM generation example (reference, not tracked)
 |------|------|
 | [Study Roadmap](docs/study_roadmap.md) | **시작점**: 이 프로젝트를 보는 순서 (Level 1~5) |
 | [Training Guide](docs/training_guide.md) | Step-by-step 실습: RTL 작성부터 GDS까지 따라하기 |
-| [Getting Started](docs/getting_started.md) | 환경 구축 + 첫 GDS 가이드 |
+| [Training Guide](docs/training_guide.md) | 환경 구축 + 실습 (counter4 → GDS) |
 | [Tool Analysis](docs/tool_analysis.md) | OpenROAD / ORFS / OpenRAM 내부 구조 분석 |
 | [Progress Log](docs/progress.md) | Phase별 결과 수치 및 실행 명령 |
 | [Evaluation](docs/evaluation.md) | 독립 평가 결과 및 개선 권장사항 |
