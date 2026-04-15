@@ -65,13 +65,24 @@ cd OpenSoC-RTL2GDS
 bash scripts/setup_tools.sh
 ```
 
+**소요 시간: 15~25분**
+
 이 스크립트는 다음을 수행합니다:
-1. **Magic** — DRC 도구. `$HOME/local/bin/magic`에 설치
-2. **Netgen** — LVS 도구. `$HOME/local/bin/netgen`에 설치
-3. **OpenROAD-flow-scripts (ORFS)** — RTL-to-GDS 자동화 스크립트
-4. **OpenRAM** — SRAM macro compiler
+1. **Tk 8.6.14** (선택) — tk-devel이 없으면 local 빌드 (~3분)
+2. **Magic** — VLSI layout + DRC 도구. `$HOME/local/bin/magic` (~5분)
+3. **Netgen** — LVS 도구. `$HOME/local/bin/netgen` (~2분)
+4. **ORFS clone** — RTL-to-GDS 자동화 스크립트 (~1분)
+5. **Yosys 0.63** — ORFS 내장 (clang 빌드, ~10분)
+6. **OpenRAM clone** — SRAM macro compiler (~30초)
 
 모든 도구는 `$HOME/local/`에 설치되므로 **sudo 불필요**.
+
+**검증:**
+```bash
+$HOME/local/bin/magic --version       # 8.3.XXX
+$HOME/local/bin/netgen                # Netgen 1.5.XXX (프롬프트 뜨면 exit)
+tools/OpenROAD-flow-scripts/tools/install/yosys/bin/yosys -V  # Yosys 0.63
+```
 
 ### Yosys 빌드 (ORFS용)
 
@@ -119,14 +130,64 @@ git checkout <해당_커밋>
 bash scripts/setup_pdk.sh
 ```
 
-이 스크립트는 [open_pdks](https://github.com/RTimothyEdwards/open_pdks)를 사용하여
-SKY130 PDK를 `pdk/` 디렉토리에 설치합니다.
+**소요 시간: 40~80분** (주로 다운로드 + Magic 변환)
 
-> **소요 시간**: 30분~1시간 (네트워크 속도에 따라 다름)
->
-> **참고**: ORFS에는 자체 sky130hd platform 파일(lib/lef/gds)이 포함되어 있으므로,
-> ORFS flow 실행 자체는 open_pdks 설치 없이도 가능합니다.
-> open_pdks는 Magic DRC, Netgen LVS 등에 필요합니다.
+### 이 스크립트가 실제로 하는 일
+
+단순 다운로드가 아니라 **PDK 파일들을 EDA 도구 포맷으로 변환**합니다:
+
+```
+[1] git clone open_pdks                      (~10초)
+[2] ./configure --enable-sky130-pdk          (~5초)
+[3] make:
+    ├── Sources 다운로드 (5GB)                (10~30분, 네트워크 의존)
+    ├── Magic으로 각 셀 GDS → MAG 변환        (20~40분) ← 경고 우수수 뜸
+    └── libs.tech/ 생성 (tool별 config)        (~1분)
+[4] make install (staging → pdk/)             (~5분)
+```
+
+**설치 결과**: `pdk/share/pdk/sky130A/` (약 8GB)
+
+### 설치 중 정상 경고 (무시 가능)
+
+다음과 같은 메시지가 **대량으로** 뜹니다 — **전부 무시 가능**:
+
+```
+Error: Cannot find file sky130A/libs.ref/sky130_fd_pr/maglef/sky130_fd_pr__rf_pnp_*.mag
+→ RF 트랜지스터 셀 (옵션). 디지털 flow 무관.
+
+Error while reading cell "sky130_fd_io__...": Boundary is not closed.
+Warning: cell "..." placed on top of itself. Ignoring the extra one.
+Input off lambda grid by 2/5; snapped to grid.
+→ sky130_fd_io (I/O pad 셀) upstream GDS 품질 이슈. 자동 처리됨.
+```
+
+> 디지털 flow는 `sky130_fd_sc_hd` (standard cells)만 사용합니다.
+> I/O pad, RF 셀은 아날로그/풀 칩 설계에서만 필요하며 우리 flow에 영향 없음.
+
+### 설치 성공 검증
+
+```bash
+# standard cell이 있으면 성공
+ls pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lib/ | head -3
+# → sky130_fd_sc_hd__tt_025C_1v80.lib ... (여러 corner)
+
+ls pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lef/
+# → sky130_fd_sc_hd.lef
+```
+
+### 왜 Magic이 PDK 설치에 필요한가?
+
+open_pdks는 각 셀마다 Magic을 호출하여:
+1. GDS 파일을 읽고 (`gds read ...`)
+2. Magic 내부 포맷(.mag)으로 변환
+3. 포트/레이어 정보 추출
+4. `libs.ref/.../mag/` 에 저장
+
+이 작업이 끝나야 나중에 Magic으로 **DRC/extraction**을 할 수 있습니다.
+
+> **참고**: ORFS flow 실행 자체는 ORFS 내장 platform 파일(lib/lef/gds)을 사용하므로
+> open_pdks 없이도 가능. 하지만 Magic DRC, Netgen LVS sign-off에는 open_pdks가 필요.
 
 ---
 
@@ -149,6 +210,8 @@ source env.sh
 ---
 
 ## Step 5: 첫 GDS 생성 (GCD 예제)
+
+**소요 시간: 약 30초~1분** (GCD는 264 cells의 소형 디자인)
 
 ```bash
 cd $ORFS/flow

@@ -360,3 +360,231 @@ SDC (.sdc)   │        ORFS (Makefile + scripts)      │
 1. **OpenRAM** → SRAM macro의 .lib/.lef/.gds/.v 생성
 2. **ORFS** → Makefile로 전체 flow 자동화, OpenRAM 출력물을 ADDITIONAL_* 변수로 연결
 3. **OpenROAD** → ORFS가 호출하는 실제 PnR 엔진
+
+---
+
+## 4. Magic
+
+> Repository: [RTimothyEdwards/magic](https://github.com/RTimothyEdwards/magic)
+
+### 역할
+**VLSI layout editor + DRC + extraction** 도구.
+칩 레이아웃(GDS) 파일을 편집/검사/변환하며, 공정 규칙 위반(DRC)을 검사.
+
+상용 도구 대응: Cadence Virtuoso (일부) + Mentor Calibre DRC
+
+### 주요 기능
+
+| 기능 | 명령어 예시 | 용도 |
+|------|-----------|------|
+| GDS 읽기 | `gds read design.gds` | 레이아웃 파일 로드 |
+| MAG 포맷 저장 | `save my_cell` | Magic 내부 포맷 |
+| DRC 검사 | `drc check; drc count` | 공정 규칙 위반 탐지 |
+| Extraction | `extract all; ext2spice` | 레이아웃 → SPICE 넷리스트 |
+| LEF 생성 | `lef write` | Abstract view 추출 |
+| Layout 뷰잉 | `magic layout.gds` (GUI) | 시각적 편집 |
+
+### 이 프로젝트에서의 역할 (3가지)
+
+**① PDK 설치 시** — open_pdks가 Magic을 호출하여 각 셀의 GDS를 MAG 포맷으로 변환 + tech 파일 준비
+
+```
+Magic 호출 → GDS 읽기 → 포트/레이어 분석 → libs.ref/.../mag/ 생성
+```
+
+**② DRC Sign-off** — 설계 완료 후 제조 규칙 검사
+
+```bash
+magic -d null -T sky130A << 'EOF'
+gds read results/.../6_final.gds
+load counter4
+select top cell
+drc check
+drc count    # violation 개수 출력
+quit
+EOF
+```
+
+**③ LVS용 Extraction** — 레이아웃에서 SPICE 넷리스트 추출 (Netgen LVS 입력)
+
+```bash
+magic -d null -T sky130A << 'EOF'
+gds read design.gds
+load counter4
+extract all
+ext2spice
+quit
+EOF
+```
+
+### 빌드 주의사항
+
+시스템에 `tk-devel`이 없으면 `--without-tcl`로 빌드해야 하는데, 그러면
+`magic --version`이 동작하지 않아 **open_pdks 설치가 실패**합니다.
+해결: Tk를 `$HOME/local`에 직접 빌드하거나, tk-devel 설치 (이 프로젝트는 전자를 선택).
+
+---
+
+## 5. Netgen
+
+> Repository: [RTimothyEdwards/netgen](https://github.com/RTimothyEdwards/netgen)
+
+### 역할
+**LVS (Layout vs Schematic) 도구**. 두 넷리스트가 논리적으로 동일한지 검증.
+
+상용 도구 대응: Mentor Calibre LVS
+
+### 사용 시나리오
+
+```
+Magic extract → 레이아웃 SPICE (layout.sp)
+                         │
+                         ▼
+                    ┌──────────┐
+Yosys netlist ────▶ │  Netgen  │ ──▶ lvs_result.log
+(design.v)          │   LVS    │    (match / mismatch)
+                    └──────────┘
+```
+
+### 실행 방법
+
+```bash
+netgen -batch lvs \
+  "results/.../6_final.spice counter4" \
+  "results/.../6_final.v counter4" \
+  $PDK_ROOT/sky130A/libs.tech/netgen/sky130A_setup.tcl \
+  lvs_result.log
+```
+
+### 결과 해석
+
+- `Circuits match uniquely` → LVS pass (제조 가능)
+- `Netlists do not match` → layout과 schematic 불일치, 디버깅 필요
+
+---
+
+## 6. PDK Installation Flow (open_pdks)
+
+> Repository: [RTimothyEdwards/open_pdks](https://github.com/RTimothyEdwards/open_pdks)
+
+PDK 자체가 아니라 **PDK 설치 자동화 도구**. SkyWater, GF180 등의 오픈소스 PDK를
+오픈소스 EDA 도구(Magic, Netgen, KLayout, librelane)에서 사용 가능한 형태로 변환.
+
+### 설치 과정 (단계별)
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│                setup_pdk.sh 실행 흐름                           │
+└────────────────────────────────────────────────────────────────┘
+
+[1] git clone open_pdks
+        │ (~10 MB)
+        ▼
+[2] ./configure --enable-sky130-pdk
+        │
+        ▼
+[3] make
+    │
+    ├── [3a] Sources 다운로드 (skywater-pdk, sky130_fd_sc_hd, ...)
+    │        └── volare 또는 git clone 사용  (~5 GB 다운로드)
+    │
+    ├── [3b] Magic으로 각 셀 GDS → MAG 변환
+    │        └── sky130_fd_sc_hd (수백개 셀)
+    │        └── sky130_fd_io (I/O 셀)   ← 여기서 Magic 경고 우수수
+    │        └── sky130_fd_pr (트랜지스터)
+    │
+    └── [3c] libs.tech/ 생성
+            └── magic/, netgen/, klayout/, librelane/ 등 tool별 config
+        │
+        ▼
+[4] make install
+        │ (~8 GB 최종 설치)
+        ▼
+    $PDK_DEST/share/pdk/sky130A/
+    ├── libs.tech/    ← tool별 설정 (magic, netgen, klayout, ...)
+    └── libs.ref/     ← 실제 셀 데이터
+        ├── sky130_fd_sc_hd/    ← standard cells (digital flow 핵심)
+        │   ├── lib/            (.lib - Liberty timing)
+        │   ├── lef/            (.lef - abstract layout)
+        │   ├── gds/            (.gds - physical layout)
+        │   ├── verilog/        (.v - behavioral model)
+        │   └── mag/, maglef/   (Magic 내부 포맷)
+        ├── sky130_fd_io/       ← I/O pad cells (chip 외부 I/O)
+        └── sky130_fd_pr/       ← primitive devices (트랜지스터)
+```
+
+### 시간 소요 (실측)
+
+| 단계 | 내용 | 소요 시간 | 디스크 |
+|------|------|----------|--------|
+| git clone | open_pdks 저장소 | ~10초 | 10MB |
+| configure | 설정 생성 | ~5초 | - |
+| make sources 다운로드 | skywater-pdk, sky130_fd_sc_hd 등 | **10~30분** (네트워크) | ~5GB |
+| make Magic 변환 | 셀별 GDS → MAG 변환 (경고 다수 발생) | **20~40분** | ~10GB (staging) |
+| make install | staging → 최종 위치 복사 + 심볼릭 링크 | ~5분 | 8GB (final) |
+| **합계** | | **40~80분** | **최종 8GB** |
+
+> CPU보다 **네트워크와 디스크 I/O**에 좌우됨.
+> 한 번 설치하면 모든 프로젝트에서 재사용 (재설치 불필요).
+
+### 설치 중 발생하는 정상 경고
+
+다음 경고들은 **모두 무시 가능**:
+
+**① RF/Analog 셀 누락** (설치 시 자주 봄)
+```
+Error: Cannot find file sky130A/libs.ref/sky130_fd_pr/maglef/sky130_fd_pr__rf_pnp_*.mag
+```
+→ RF 트랜지스터 셀은 옵션 다운로드. 디지털 flow 무관.
+
+**② Magic GDS 읽기 경고**
+```
+CIF file read warning: Boundary is not closed
+Warning: cell "..." placed on top of itself. Ignoring the extra one.
+Input off lambda grid by 2/5; snapped to grid.
+```
+→ sky130_fd_io (I/O 셀) GDS의 upstream 품질 이슈. 자동 snap/ignore로 처리됨.
+
+**③ GF180 klayout tech 누락**
+```
+cp: cannot stat '.../gf180mcu_ws_klayout/.../klayout/tech': No such file or directory
+```
+→ open_pdks upstream 이슈. SKY130만 설치하면 회피 가능.
+
+### 핵심 검증 (설치 성공 여부)
+
+```bash
+# 이 파일들이 있으면 디지털 flow 준비 완료
+ls pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lib/
+# → sky130_fd_sc_hd__tt_025C_1v80.lib (와 여러 corner .lib들)
+
+ls pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lef/
+# → sky130_fd_sc_hd.lef
+
+ls pdk/share/pdk/sky130A/libs.tech/magic/
+# → sky130A.magicrc, sky130A.tech
+```
+
+---
+
+## 전체 시간 요약 (처음 설치 → 첫 GDS)
+
+| 단계 | 도구 | 소요 시간 | 비고 |
+|------|------|----------|------|
+| setup_tools.sh | Magic, Netgen, Yosys 빌드 | **15~25분** | 한 번만 |
+| setup_pdk.sh | SKY130 PDK 설치 | **40~80분** | 한 번만 |
+| Verilator sim | RTL 검증 | ~3초 | 디자인마다 |
+| ORFS synth | Yosys 합성 | ~5초 (소형) | 디자인마다 |
+| ORFS floorplan | 플로어플랜 | ~3초 | 디자인마다 |
+| ORFS place | Placement | ~5초 (소형) | 디자인마다 |
+| ORFS CTS | Clock Tree | ~2초 | 디자인마다 |
+| ORFS route | Routing | ~10초 (소형) | 디자인마다 |
+| KLayout GDS merge | DEF → GDS | ~5초 | 디자인마다 |
+| Magic DRC | 규칙 검사 | ~10초 | 디자인마다 |
+| Netgen LVS | 넷리스트 비교 | ~5초 | 디자인마다 |
+| **처음부터 첫 GDS까지** | | **약 1~2시간** | 주로 PDK 설치 시간 |
+| **이후 디자인 한 번 flow** | | **약 10~60초** | 디자인 크기에 따라 |
+
+**대형 디자인 기준 (Phase 4 PicoRV32, Phase 5 SoC+SRAM):**
+- PicoRV32 (3000 셀): synth ~10초, place ~1분, route ~5분
+- SoC + SRAM (macro 포함): route ~15분, GDS merge ~10초
