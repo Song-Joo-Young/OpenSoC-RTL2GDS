@@ -95,6 +95,12 @@ if [ ! -d OpenROAD-flow-scripts ]; then
     git checkout b811251d2 2>/dev/null || true
     cd ..
 fi
+# Patch: final_report.tcl GUI crash 방지 (headless 환경)
+FINAL_RPT="OpenROAD-flow-scripts/flow/scripts/final_report.tcl"
+if grep -q 'gui::show.*save_images' "$FINAL_RPT" 2>/dev/null && ! grep -q 'catch.*gui::show' "$FINAL_RPT" 2>/dev/null; then
+    echo "[3/4] Patching final_report.tcl (GUI-0070 fix)..."
+    sed -i 's|gui::show "source \$::env(SCRIPTS_DIR)/save_images.tcl" false|if {[catch {gui::show "source $::env(SCRIPTS_DIR)/save_images.tcl" false} err]} { puts "Note: Skipping save_images (headless): $err" }|' "$FINAL_RPT"
+fi
 echo "[3/4] ORFS ready."
 
 # --- Step 3b: ORFS 내장 Yosys 빌드 (clang 필수) ---
