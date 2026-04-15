@@ -31,7 +31,7 @@ echo "  [GDS]  $RESULTS/6_final.gds"
 ls -lh "$RESULTS/6_final.gds" 2>/dev/null | awk '{print "         크기: "$5}'
 echo "         → fab에 보내는 최종 파일"
 echo ""
-echo "========== GUI로 확인 (꼭 해보세요!) =========="
+echo "========== GUI로 확인  =========="
 echo "  klayout $RESULTS/6_final.gds"
 echo ""
 echo "  KLayout에서 해볼 것:"
