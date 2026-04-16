@@ -29,15 +29,15 @@
 | 순서 | 할 것 | 핵심 |
 |------|------|------|
 | 1 | [getting_started.md](getting_started.md) Step 1~4 | 도구 빌드, PDK 설치, env.sh |
-| 2 | [training_guide.md](training_guide.md) Part 3~4 | counter4 RTL 작성 + Verilator sim |
+| 2 | [training_guide.md](training_guide.md) Part 3~4 | `01_counter4` RTL 작성 + Verilator sim |
 | 3 | [training_guide.md](training_guide.md) Part 5~10 | Synthesis → GDS, 단계마다 결과 확인 |
 | 4 | [blog_rtl_to_gds.md](blog_rtl_to_gds.md) Step 4 | OpenSTA로 타이밍 리포트 직접 읽기 |
 
 **실습 파일:**
 ```
-training/counter4/src/counter4.v      ← RTL (직접 수정해보기)
-training/counter4/tb/tb_counter4.cpp  ← 테스트벤치
-training/counter4/constraints/        ← SDC (clock period 바꿔보기)
+training/01_counter4/src/counter4.v      ← RTL (직접 수정해보기)
+training/01_counter4/tb/tb_counter4.cpp  ← 테스트벤치
+training/01_counter4/constraints/        ← SDC (clock period 바꿔보기)
 ```
 
 **이 단계 후 할 수 있는 것:**
@@ -53,18 +53,18 @@ training/counter4/constraints/        ← SDC (clock period 바꿔보기)
 
 | 순서 | 볼 것 | 비교 포인트 |
 |------|------|------------|
-| 1 | `designs/02_counter/` | 8-bit counter: 87 cells, 0.27mW |
+| 1 | `training/02_uart_tx/` | UART TX + FIFO + ICG: multi-file RTL, clock-gate 관찰 |
 | 2 | `designs/03_alu/` | pipelined ALU: ~100 cells, pipeline 효과 |
-| 3 | `designs/06_systolic/` | 2x2 systolic: 1605 cells, 곱셈기 power 지배 |
-| 4 | `designs/04_picorv32/` | RISC-V CPU: ~3K cells, clock power 지배 |
-| 5 | `designs/05_soc/` | SoC+SRAM: macro integration, SRAM power 50% |
+| 3 | `designs/04_systolic/` | 2x2 systolic: 1605 cells, 곱셈기 power 지배 |
+| 4 | `designs/05_picorv32/` | RISC-V CPU: ~3K cells, clock power 지배 |
+| 5 | `designs/06_soc/` | SoC+SRAM: macro integration, SRAM power 50% |
 | 6 | [progress.md](progress.md) | 전체 수치 비교 표 |
 
 **이 단계에서 관찰할 것:**
 ```
                   Cells    Area       Power     특징
-counter4:           11     235µm²    78.5µW    가장 간단
-counter8:           87     865µm²    0.27mW    parameterized
+counter4:           11      235µm²   78.5µW    가장 간단
+uart_tx:           192    2626µm²        -     FIFO + serializer + ICG
 ALU:              ~100    1600µm²    0.66mW    pipeline
 systolic:        1,605   17224µm²    7.73mW    곱셈기 → comb power 79%
 PicoRV32:        ~3000  102600µm²   16.0mW    CPU → clock power 43%
@@ -147,13 +147,13 @@ docs/
 └── evaluation.md         ← 독립 평가 + 개선 권장사항
 
 designs/                  ← 디자인 소스 (난이도 순)
-├── 02_counter/           Level 2
+├── 02_uart_tx/           Level 2
 ├── 03_alu/               Level 3
-├── 04_picorv32/          Level 3
-├── 05_soc/               Level 3~4
-└── 06_systolic/          Level 3
+├── 04_systolic/          Level 3
+├── 05_picorv32/          Level 3
+└── 06_soc/               Level 3~4
 
-training/counter4/        ← Level 2 실습 전용
+training/01_counter4/     ← Level 2 실습 전용
 ```
 
 ---

@@ -51,7 +51,7 @@ python3.12 -m openlane --version  # 2.3.10
 
 ```bash
 # 이미 만들어진 training 디자인 사용
-cat training/counter4/src/counter4.v
+cat training/01_counter4/src/counter4.v
 ```
 
 ```verilog
@@ -75,7 +75,7 @@ endmodule
 ## Step 2: Simulation (공통)
 
 ```bash
-cd training/counter4
+cd training/01_counter4
 verilator --cc --exe --build -Wno-fatal \
   -Mdir build --top-module counter4 \
   src/counter4.v tb/tb_counter4.cpp
@@ -110,7 +110,7 @@ export EQUIVALENCE_CHECK = 0
 ```bash
 mkdir -p openlane_run/counter4
 cd openlane_run/counter4
-cp ../../training/counter4/src/counter4.v .
+cp ../../training/01_counter4/src/counter4.v .
 ```
 
 config.json:
@@ -374,8 +374,8 @@ Step 8: 비교 ───────┴─────────────�
 ### 난이도 순서
 1. **counter4** (이 가이드) — 가장 간단, flow 검증용
 2. **8-bit ALU** (`designs/03_alu/`) — 조합+순차 혼합
-3. **PicoRV32** (`designs/04_picorv32/`) — 실제 CPU
-4. **SoC + SRAM** (`designs/05_soc/`) — macro 포함
+3. **PicoRV32** (`designs/05_picorv32/`) — 실제 CPU
+4. **SoC + SRAM** (`designs/06_soc/`) — macro 포함
 
 ### 실험 아이디어
 - 같은 디자인으로 **clock period 줄여보기** (10ns → 5ns → 2ns)

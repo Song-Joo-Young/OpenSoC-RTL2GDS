@@ -127,7 +127,7 @@ training_guide.md Part 11에 DRC/LVS 명령어가 문서화되어 있지만, 실
 
 #### [LOW] designs/ 내 build artifacts 커밋 가능성
 
-**현상**: `designs/02_counter/build/`, `designs/03_alu/build/` 디렉토리에 Verilator 빌드 출력물(`.o`, `.a`, 바이너리)이 존재.
+**현상**: `designs/02_uart_tx/build/`, `designs/03_alu/build/` 디렉토리에 Verilator 빌드 출력물(`.o`, `.a`, 바이너리)이 존재.
 `.gitignore`에 `**/build/` 패턴이 있는지 확인 필요.
 
 ---

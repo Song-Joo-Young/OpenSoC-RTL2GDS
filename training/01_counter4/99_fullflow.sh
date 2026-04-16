@@ -9,15 +9,12 @@ echo ""
 # Clean
 $MAKE_CMD clean_all 2>/dev/null
 
+# congestion.rpt workaround
+mkdir -p "$REPORTS"
+touch "$REPORTS/congestion.rpt"
+
 # Full flow
 $MAKE_CMD
-
-# congestion.rpt workaround
-if [ ! -f "$RESULTS/5_2_route.odb" ]; then
-    mkdir -p "$REPORTS"
-    touch "$REPORTS/congestion.rpt"
-    $MAKE_CMD
-fi
 
 # GDS
 cat platforms/$PLATFORM/lef/sky130_fd_sc_hd.tlef \

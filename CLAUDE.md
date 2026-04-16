@@ -18,8 +18,8 @@ Read the local context first:
 
 ```bash
 sed -n '1,200p' README.md
-sed -n '1,200p' designs/02_counter/Makefile
-sed -n '1,200p' training/counter4/01_sim.sh
+sed -n '1,200p' designs/02_uart_tx/Makefile
+sed -n '1,200p' training/01_counter4/01_sim.sh
 ```
 
 For any design-specific task, inspect the nearest `Makefile`, RTL file, testbench, and flow script before editing.
@@ -30,9 +30,9 @@ Use the smallest relevant check first.
 
 ```bash
 source env.sh
-make -C designs/02_counter sim
+make -C designs/02_uart_tx sim
 make -C designs/03_alu sim
-bash training/counter4/01_sim.sh
+bash training/01_counter4/01_sim.sh
 ```
 
 If RTL, constraints, or ORFS scripts change, run the affected simulation or flow step and report the exact command used.

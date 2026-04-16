@@ -13,7 +13,7 @@ verilator --cc --exe --build -Wno-fatal \
   $RTL_FILES $TB_FILE
 
 echo ""
-./$SIM_BUILD_DIR/V${TOP_MODULE}
+"$SIM_BUILD_DIR/V${TOP_MODULE}"
 
 echo ""
 echo "다음: bash 02_setup_ORFS.sh"
