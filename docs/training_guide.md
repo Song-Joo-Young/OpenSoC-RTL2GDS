@@ -1,7 +1,9 @@
 # RTL-to-GDS Training Guide
 
 > 기본 실습은 `training/01_counter4/`의 번호별 스크립트로 진행한다.
-> 다음 실습은 `training/02_uart_tx/` 이며, 이후 동일한 흐름을 `03_alu`, `04_systolic`, `05_picorv32`, `06_soc`로 확장한다.
+> 다음 실습은 `training/02_uart_tx/` 이며, 이후 동일한 흐름을 `training/03_alu`, `training/04_systolic`, `training/05_picorv32`로 확장한다.
+> `training/05_picorv32/`는 로컬 testbench 대신 Verilator lint/smoke check로 시작한다.
+> `designs/06_soc/`는 별도 training 스크립트 없이 ORFS 설정으로 직접 재현한다.
 
 ---
 
@@ -62,7 +64,7 @@ source env.sh
 | `training/02_uart_tx` | 멀티파일 UART TX + FIFO + ICG | `cd training/02_uart_tx && bash 01_sim.sh` | `cd training/02_uart_tx && bash 99_fullflow.sh` | `$ORFS/flow/results/sky130hd/uart_tx/base/` |
 | `training/03_alu` | 8-bit pipelined ALU training track | `cd training/03_alu && bash 01_sim.sh` | `cd training/03_alu && bash 99_fullflow.sh` | `$ORFS/flow/results/sky130hd/alu/base/` |
 | `training/04_systolic` | 2x2 systolic array training track | `cd training/04_systolic && bash 01_sim.sh` | `cd training/04_systolic && bash 99_fullflow.sh` | `$ORFS/flow/results/sky130hd/systolic_2x2/base/` |
-| `designs/05_picorv32` | PicoRV32 RISC-V core | - | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/picorv32/config.mk` | `$ORFS/flow/results/sky130hd/picorv32/base/` |
+| `training/05_picorv32` | PicoRV32 RISC-V core training track | `cd training/05_picorv32 && bash 01_sim.sh` | `cd training/05_picorv32 && bash 99_fullflow.sh` | `$ORFS/flow/results/sky130hd/picorv32/base/` |
 | `designs/06_soc` | PicoRV32 + SRAM macro | - | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/picosoc_mini/config.mk` | `$ORFS/flow/results/sky130hd/picosoc_mini/base/` |
 
 권장 순서는 `01_counter4 -> 02_uart_tx -> 03_alu -> 04_systolic -> 05_picorv32 -> 06_soc` 이다.
@@ -531,28 +533,28 @@ bash 02_setup_ORFS.sh
 bash 99_fullflow.sh
 ```
 
-### Track D: `designs/04_systolic`
+### Track D: `training/04_systolic`
 
 연산량이 커지면서 combinational power가 커지는 사례다.
 
 ```bash
-make -C designs/04_systolic clean
-make -C designs/04_systolic sim
-source env.sh
-cd "$ORFS/flow"
-make DESIGN_CONFIG=./designs/sky130hd/systolic_2x2/config.mk clean_all
-make DESIGN_CONFIG=./designs/sky130hd/systolic_2x2/config.mk
+cd training/04_systolic
+bash 00_clean.sh
+bash 01_sim.sh
+bash 02_setup_ORFS.sh
+bash 99_fullflow.sh
 ```
 
-### Track E: `designs/05_picorv32`
+### Track E: `training/05_picorv32`
 
-검증된 외부 CPU RTL로 full RTL-to-GDS를 수행한다. 현재 저장소에는 별도 로컬 테스트벤치가 없다.
+검증된 외부 CPU RTL로 CPU-scale full RTL-to-GDS를 수행한다. 로컬 단계는 기능 시뮬레이션 대신 lint/smoke check로 시작한다.
 
 ```bash
-source env.sh
-cd "$ORFS/flow"
-make DESIGN_CONFIG=./designs/sky130hd/picorv32/config.mk clean_all
-make DESIGN_CONFIG=./designs/sky130hd/picorv32/config.mk
+cd training/05_picorv32
+bash 00_clean.sh
+bash 01_sim.sh
+bash 02_setup_ORFS.sh
+bash 99_fullflow.sh
 ```
 
 ### Track F: `designs/06_soc`
@@ -618,9 +620,9 @@ bash 01_sim.sh
 
 난이도 순서:
 1. UART TX + FIFO + ICG (`training/02_uart_tx/`)
-2. ALU (`designs/03_alu/`)
-3. 2x2 Systolic Array (`designs/04_systolic/`)
-4. PicoRV32 RISC-V (`designs/05_picorv32/`)
+2. ALU (`training/03_alu/`)
+3. 2x2 Systolic Array (`training/04_systolic/`)
+4. PicoRV32 RISC-V (`training/05_picorv32/`)
 5. SoC + SRAM (`designs/06_soc/`)
 
 기본 문서 경로는 `sky130hd` 하나만 다룬다. 다른 PDK 비교는 선택 실험으로만 추가하는 편이 재현성과 설치 시간을 모두 개선한다.
