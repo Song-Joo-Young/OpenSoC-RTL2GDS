@@ -28,10 +28,10 @@
 
 | 순서 | 할 것 | 핵심 |
 |------|------|------|
-| 1 | [getting_started.md](getting_started.md) Step 1~4 | 도구 빌드, PDK 설치, env.sh |
-| 2 | [training_guide.md](training_guide.md) Part 3~4 | `01_counter4` RTL 작성 + Verilator sim |
-| 3 | [training_guide.md](training_guide.md) Part 5~10 | Synthesis → GDS, 단계마다 결과 확인 |
-| 4 | [blog_rtl_to_gds.md](blog_rtl_to_gds.md) Step 4 | OpenSTA로 타이밍 리포트 직접 읽기 |
+| 1 | [training_guide.md](training_guide.md) Part 2~4 | 도구 빌드, PDK 설치, env.sh, `01_counter4` RTL + Verilator sim |
+| 2 | [training_guide.md](training_guide.md) Part 5~13 | Synthesis → DRC/LVS, 단계마다 결과 확인 |
+| 3 | [blog_rtl_to_gds.md](blog_rtl_to_gds.md) Step 4 | OpenSTA로 타이밍 리포트 직접 읽기 |
+| 4 | `training/01_counter4/` 번호별 스크립트 | `00_clean.sh`부터 `99_fullflow.sh`까지 직접 실행 |
 
 **실습 파일:**
 ```
@@ -54,8 +54,8 @@ training/01_counter4/constraints/        ← SDC (clock period 바꿔보기)
 | 순서 | 볼 것 | 비교 포인트 |
 |------|------|------------|
 | 1 | `training/02_uart_tx/` | UART TX + FIFO + ICG: multi-file RTL, clock-gate 관찰 |
-| 2 | `designs/03_alu/` | pipelined ALU: ~100 cells, pipeline 효과 |
-| 3 | `designs/04_systolic/` | 2x2 systolic: 1605 cells, 곱셈기 power 지배 |
+| 2 | `training/03_alu/` | pipelined ALU: ~100 cells, pipeline 효과 |
+| 3 | `training/04_systolic/` | 2x2 systolic: 1605 cells, 곱셈기 power 지배 |
 | 4 | `designs/05_picorv32/` | RISC-V CPU: ~3K cells, clock power 지배 |
 | 5 | `designs/06_soc/` | SoC+SRAM: macro integration, SRAM power 50% |
 | 6 | [progress.md](progress.md) | 전체 수치 비교 표 |
@@ -139,21 +139,26 @@ SoC+SRAM:    3000+macro 544466µm²   18.2mW    macro → SRAM power 50%
 docs/
 ├── study_roadmap.md      ← 지금 보고 있는 이 문서 (학습 순서)
 ├── blog_rtl_to_gds.md    ← 포스팅용: 전체 flow + 실측 수치 + OpenSTA
-├── training_guide.md     ← 실습용: Part 1~12 step-by-step
-├── getting_started.md    ← 환경 구축 전용
+├── training_guide.md     ← 실습용: Part 1~14 step-by-step
 ├── dual_track_guide.md   ← ORFS vs OpenLane 비교
 ├── tool_analysis.md      ← OpenROAD/ORFS/OpenRAM 내부 구조
 ├── progress.md           ← Phase 0~6 수치 결과
 └── evaluation.md         ← 독립 평가 + 개선 권장사항
 
 designs/                  ← 디자인 소스 (난이도 순)
+├── 01_gcd/               ORFS 예제
 ├── 02_uart_tx/           Level 2
 ├── 03_alu/               Level 3
 ├── 04_systolic/          Level 3
 ├── 05_picorv32/          Level 3
-└── 06_soc/               Level 3~4
+├── 06_soc/               Level 3~4
+└── legacy_counter/       보관용 예제
 
-training/01_counter4/     ← Level 2 실습 전용
+training/
+├── 01_counter4/          ← Level 2 실습 전용
+├── 02_uart_tx/           ← 후속 실습
+├── 03_alu/               ← 후속 실습
+└── 04_systolic/          ← 후속 실습
 ```
 
 ---
