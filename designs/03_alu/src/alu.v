@@ -40,7 +40,7 @@ module alu #(
             4'h3: alu_out = {1'b0, a_reg | b_reg};                // OR
             4'h4: alu_out = {1'b0, a_reg ^ b_reg};                // XOR
             4'h5: alu_out = {1'b0, ~a_reg};                       // NOT
-            4'h6: alu_out = {a_reg[0], a_reg[WIDTH-1:1]};         // SHR
+            4'h6: alu_out = {1'b0, a_reg[0], a_reg[WIDTH-1:1]};   // SHR
             4'h7: alu_out = {1'b0, a_reg[WIDTH-2:0], 1'b0};      // SHL
             4'h8: alu_out = (a_reg < b_reg)  ? {{WIDTH{1'b0}}, 1'b1} : {(WIDTH+1){1'b0}};  // SLT
             4'h9: alu_out = (a_reg == b_reg) ? {{WIDTH{1'b0}}, 1'b1} : {(WIDTH+1){1'b0}};       // SEQ

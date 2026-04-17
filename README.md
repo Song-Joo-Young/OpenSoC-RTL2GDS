@@ -50,7 +50,8 @@ bash 99_fullflow.sh
 |------|------|----------|----------------|
 | `training/01_counter4` | 첫 RTL-to-GDS 실습 | `bash training/01_counter4/01_sim.sh` | `bash training/01_counter4/99_fullflow.sh` |
 | `training/02_uart_tx` | 멀티파일 RTL + `.f` + ICG 실습 | `bash training/02_uart_tx/01_sim.sh` | `bash training/02_uart_tx/99_fullflow.sh` |
-| `designs/03_alu` | pipelined ALU | `make -C designs/03_alu sim` | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/alu/config.mk` |
+| `training/03_alu` | pipelined ALU full training track | `bash training/03_alu/01_sim.sh` | `bash training/03_alu/99_fullflow.sh` |
+| `designs/03_alu` | pipelined ALU source-only path | `make -C designs/03_alu sim` | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/alu/config.mk` |
 | `designs/04_systolic` | 2x2 systolic array | `make -C designs/04_systolic sim` | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/systolic_2x2/config.mk` |
 | `designs/05_picorv32` | RISC-V core | - | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/picorv32/config.mk` |
 | `designs/06_soc` | PicoRV32 + SRAM macro | - | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/picosoc_mini/config.mk` |

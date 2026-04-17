@@ -60,7 +60,8 @@ source env.sh
 |--------|------|----------|-----------|----------|
 | `training/01_counter4` | 첫 실습용 4-bit counter | `cd training/01_counter4 && bash 01_sim.sh` | `cd training/01_counter4 && bash 99_fullflow.sh` | `$ORFS/flow/results/sky130hd/counter4/base/` |
 | `training/02_uart_tx` | 멀티파일 UART TX + FIFO + ICG | `cd training/02_uart_tx && bash 01_sim.sh` | `cd training/02_uart_tx && bash 99_fullflow.sh` | `$ORFS/flow/results/sky130hd/uart_tx/base/` |
-| `designs/03_alu` | 8-bit pipelined ALU | `make -C designs/03_alu sim` | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/alu/config.mk` | `$ORFS/flow/results/sky130hd/alu/base/` |
+| `training/03_alu` | 8-bit pipelined ALU training track | `cd training/03_alu && bash 01_sim.sh` | `cd training/03_alu && bash 99_fullflow.sh` | `$ORFS/flow/results/sky130hd/alu/base/` |
+| `designs/03_alu` | 8-bit pipelined ALU source-only path | `make -C designs/03_alu sim` | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/alu/config.mk` | `$ORFS/flow/results/sky130hd/alu/base/` |
 | `designs/04_systolic` | 2x2 systolic array | `make -C designs/04_systolic sim` | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/systolic_2x2/config.mk` | `$ORFS/flow/results/sky130hd/systolic_2x2/base/` |
 | `designs/05_picorv32` | PicoRV32 RISC-V core | - | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/picorv32/config.mk` | `$ORFS/flow/results/sky130hd/picorv32/base/` |
 | `designs/06_soc` | PicoRV32 + SRAM macro | - | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/picosoc_mini/config.mk` | `$ORFS/flow/results/sky130hd/picosoc_mini/base/` |
@@ -519,17 +520,16 @@ bash 02_setup_ORFS.sh
 bash 99_fullflow.sh
 ```
 
-### Track C: `designs/03_alu`
+### Track C: `training/03_alu`
 
 2-stage pipeline 구조를 보는 디자인이다.
 
 ```bash
-make -C designs/03_alu clean
-make -C designs/03_alu sim
-source env.sh
-cd "$ORFS/flow"
-make DESIGN_CONFIG=./designs/sky130hd/alu/config.mk clean_all
-make DESIGN_CONFIG=./designs/sky130hd/alu/config.mk
+cd training/03_alu
+bash 00_clean.sh
+bash 01_sim.sh
+bash 02_setup_ORFS.sh
+bash 99_fullflow.sh
 ```
 
 ### Track D: `designs/04_systolic`
