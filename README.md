@@ -2,7 +2,7 @@
 
 Open-source RTL-to-GDS training workspace using `Verilog + Verilator + Yosys + OpenROAD-flow-scripts + SKY130HD`.
 
-이 저장소는 작은 RTL 예제에서 시작해 `UART -> ALU -> systolic array -> PicoRV32 -> SRAM-integrated SoC`로 확장하면서, 오픈소스 디지털 ASIC flow를 실제 결과물 중심으로 재현하는 것을 목표로 합니다.
+이 저장소는 작은 RTL 예제에서 시작해 `UART -> ALU -> systolic array -> PicoRV32 -> SRAM-integrated SoC`로 확장하면서, 오픈소스 디지털 ASIC flow를 실제 결과물 중심으로 재현하는 것을 목표로 합니다. 현재 공개 트랙의 기준점은 `Phase 6`까지이며, 그 다음 단계는 비공개 코어가 아니라 open-source SoC 레벨 확장입니다.
 
 처음 시작할 때는 `designs/01_counter4`에서 RTL을 보고, `training/01_counter4`에서 번호별 스크립트를 실행하면 됩니다.
 
@@ -34,7 +34,8 @@ Open-source RTL-to-GDS training workspace using `Verilog + Verilator + Yosys + O
 | Fig. 1. `counter4` GDS preview. Small standard-cell design with visible PDN stripes and a compact routed logic island. | ![counter4 GDS preview](docs/assets/counter4_gds.png) |
 | Fig. 2. `uart_tx` GDS preview. Multi-file RTL with routing density spread across serializer, FIFO, and control logic. | ![uart_tx GDS preview](docs/assets/uart_tx_gds.png) |
 | Fig. 3. `alu` GDS preview. Datapath-centric block with dense central routing around arithmetic logic. | ![alu GDS preview](docs/assets/alu_gds.png) |
-| Fig. 4. `picosoc_mini` GDS preview. Macro-dominated SoC floorplan where SRAM footprint dominates die area. | ![picosoc_mini GDS preview](docs/assets/picosoc_mini_gds.png) |
+| Fig. 4. `systolic_2x2` GDS preview. Arithmetic-heavy accelerator-style block with repeated datapath structure and visibly tiled placement. | ![systolic_2x2 GDS preview](docs/assets/systolic_2x2_gds.png) |
+| Fig. 5. `picosoc_mini` GDS preview. Macro-dominated SoC floorplan where SRAM footprint dominates die area. | ![picosoc_mini GDS preview](docs/assets/picosoc_mini_gds.png) |
 
 이 이미지는 저장소 안의 실제 `6_final.gds`에서 KLayout batch rendering으로 추출한 미리보기입니다.
 
@@ -76,7 +77,8 @@ source env.sh
 1. `designs/01_counter4/src/counter4.v`로 가장 작은 RTL을 읽습니다.
 2. `bash training/01_counter4/01_sim.sh`로 기능 검증을 봅니다.
 3. `bash training/01_counter4/99_fullflow.sh`로 첫 GDS를 만듭니다.
-4. 이후 `02_uart_tx -> 03_alu -> 04_systolic -> 05_picorv32` 순서로 확장합니다.
+4. 이후 `02_uart_tx -> 03_alu -> 04_systolic -> 05_picorv32 -> 06_soc` 순서로 확장합니다.
+5. `06_soc`까지 재현이 끝나면 다음 실험은 비공개 RTL이 아니라 `runs/template_rtl/` 기반의 open-source SoC 레벨 설계를 대상으로 진행하는 것이 권장 경로입니다.
 
 ### 3. Recommended Reader Path
 
@@ -93,7 +95,7 @@ source env.sh
 
 ### 3a. Bring Your Own RTL
 
-임의의 RTL이나 외부 open-source RTL을 training 방식으로 태우고 싶다면 `runs/template_rtl/`를 복제해서 쓰면 됩니다.
+임의의 RTL이나 외부 open-source RTL을 training 방식으로 태우고 싶다면 `runs/template_rtl/`를 복제해서 쓰면 됩니다. 공개 저장소 기준으로는 `Phase 6` 이후 확장도 이 경로를 기준으로 유지하는 편이 가장 자연스럽습니다.
 
 ```bash
 cp -r runs/template_rtl runs/my_design

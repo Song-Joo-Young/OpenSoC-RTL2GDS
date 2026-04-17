@@ -38,7 +38,7 @@ bash 99_fullflow.sh
 
 ### `design.cfg`
 
-- `DESIGN_NAME`: ORFS 결과 디렉토리 이름과 top module 이름
+- `RUN_NAME`: ORFS 결과 디렉토리 이름
 - `TOP_MODULE`: Verilator top module
 - `RTL_FILELIST`: filelist 경로
 - `TB_FILE`: testbench 경로
@@ -49,13 +49,14 @@ bash 99_fullflow.sh
 
 ### `rtl.f`
 
-run 디렉토리 기준 상대경로로 RTL 파일을 적습니다.
+run 디렉토리 기준 상대경로를 기본으로 쓰되, 외부 절대경로 RTL도 그대로 적을 수 있습니다.
 
 예:
 
 ```text
 src/my_top.v
 src/my_submodule.v
+/abs/path/to/external_block.sv
 ```
 
 ### `constraint.sdc`
@@ -91,5 +92,8 @@ set_output_delay 2.0 -clock core_clock [all_outputs]
 ## Notes
 
 - 현재 템플릿은 `sky130hd`를 기본값으로 둡니다.
+- `RUN_NAME`과 `TOP_MODULE`은 분리되어 있습니다. 즉, run 디렉토리 이름과 RTL top module 이름이 달라도 됩니다.
+- `rtl.f`에는 상대경로뿐 아니라 절대경로 RTL도 직접 적을 수 있습니다.
+- 외부 include 디렉토리가 필요하면 `design.cfg`의 `EXTRA_VERILOG_INCLUDE_DIRS`에 공백으로 구분해 추가하면 됩니다.
 - macro LEF/LIB/GDS가 있으면 `design.cfg`의 optional 변수로 추가할 수 있습니다.
 - ORFS 내장 finish를 그대로 쓰지 않고 KLayout merge를 한 번 더 수행하는 현재 저장소 흐름을 그대로 따릅니다.

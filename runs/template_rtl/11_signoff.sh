@@ -16,7 +16,7 @@ fi
 echo "========== DRC (Magic) =========="
 PDK_ROOT="$MAGIC_PDK_ROOT" magic -dnull -noconsole -rcfile "$MAGIC_RC" << MAGICSCRIPT
 gds read $RESULTS/6_final.gds
-load $DESIGN_NAME
+load $TOP_MODULE
 select top cell
 drc check
 drc count
@@ -27,8 +27,8 @@ echo ""
 echo "========== LVS (Netgen) =========="
 if [ -f "$RESULTS/6_final.spice" ]; then
     netgen -batch lvs \
-      "$RESULTS/6_final.spice $DESIGN_NAME" \
-      "$RESULTS/6_final.v $DESIGN_NAME" \
+      "$RESULTS/6_final.spice $TOP_MODULE" \
+      "$RESULTS/6_final.v $TOP_MODULE" \
       "$NETGEN_SETUP" \
       "$REPORTS/lvs_result.log"
     tail -5 "$REPORTS/lvs_result.log"

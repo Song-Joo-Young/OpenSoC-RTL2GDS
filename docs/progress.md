@@ -144,3 +144,4 @@
 ### Key Observations
 - SRAM macro dominates area and power
 - This is the first macro-integrated flow in the repository
+- Public baseline is now complete through Phase 6; the next target should be an open-source SoC-scale design rather than a closed RTL experiment

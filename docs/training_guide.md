@@ -4,6 +4,7 @@
 > 다음 실습은 `training/02_uart_tx/` 이며, 이후 동일한 흐름을 `training/03_alu`, `training/04_systolic`, `training/05_picorv32`로 확장한다.
 > `training/05_picorv32/`는 로컬 testbench 대신 Verilator lint/smoke check로 시작한다.
 > `designs/06_soc/`는 별도 training 스크립트 없이 ORFS 설정으로 직접 재현한다.
+> `Phase 6` 이후의 다음 대상은 비공개 코어가 아니라 `runs/template_rtl/` 기반의 open-source SoC 레벨 설계로 잡는 것을 권장한다.
 > 각 training 트랙의 RTL, testbench, SDC 원본은 같은 번호의 `designs/` 디렉토리를 기준으로 관리한다.
 > 실습할 때는 `training/`에서 실행하고, 코드와 제약을 읽거나 수정할 때는 대응하는 `designs/`를 보면 된다.
 
@@ -69,7 +70,7 @@ source env.sh
 | `training/05_picorv32` | PicoRV32 RISC-V core training track | `cd training/05_picorv32 && bash 01_sim.sh` | `cd training/05_picorv32 && bash 99_fullflow.sh` | `$ORFS/flow/results/sky130hd/picorv32/base/` |
 | `designs/06_soc` | PicoRV32 + SRAM macro | - | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/picosoc_mini/config.mk` | `$ORFS/flow/results/sky130hd/picosoc_mini/base/` |
 
-권장 순서는 `01_counter4 -> 02_uart_tx -> 03_alu -> 04_systolic -> 05_picorv32 -> 06_soc` 이다.
+권장 순서는 `01_counter4 -> 02_uart_tx -> 03_alu -> 04_systolic -> 05_picorv32 -> 06_soc` 이다. `06_soc`까지 끝나면 저장소의 공개 학습 트랙은 일단락되고, 이후 확장은 `runs/template_rtl/`에서 open-source SoC를 태우는 방향이 자연스럽다.
 
 ### Upstream References
 

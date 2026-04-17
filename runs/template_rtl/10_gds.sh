@@ -16,7 +16,7 @@ cat platforms/$PLATFORM/lef/sky130_fd_sc_hd.tlef \
     > "$RESULTS/merged.lef"
 
 klayout -zz \
-  -rd design_name=$DESIGN_NAME \
+  -rd design_name=$TOP_MODULE \
   -rd in_def="$RESULTS/6_final.def" \
   -rd in_files="./platforms/$PLATFORM/gds/sky130_fd_sc_hd.gds" \
   -rd out_file="$RESULTS/6_final.gds" \

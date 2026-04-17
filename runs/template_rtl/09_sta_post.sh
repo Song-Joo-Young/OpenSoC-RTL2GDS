@@ -7,7 +7,7 @@ echo "========== Post-Route STA =========="
 sta -exit << STASCRIPT
 read_liberty $LIBERTY
 read_verilog $RESULTS/6_final.v
-link_design $DESIGN_NAME
+link_design $TOP_MODULE
 read_sdc $ORFS_CFG/constraint.sdc
 read_spef $RESULTS/6_final.spef
 

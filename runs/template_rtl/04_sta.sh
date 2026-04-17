@@ -7,7 +7,7 @@ echo "========== Pre-Route STA =========="
 sta -exit << STASCRIPT
 read_liberty $LIBERTY
 read_verilog $RESULTS/1_synth.v
-link_design $DESIGN_NAME
+link_design $TOP_MODULE
 read_sdc $ORFS_CFG/constraint.sdc
 
 puts "\n=== Setup (max path) ==="
