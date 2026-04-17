@@ -1,8 +1,7 @@
 #!/bin/bash
-# PDK 빌드 스크립트 (기본: SKY130, 선택: GF180)
+# PDK 빌드 스크립트 (SKY130 전용)
 # Prerequisites: Magic must be installed first
 # Usage: bash scripts/setup_pdk.sh
-# Optional: SETUP_GF180=1 bash scripts/setup_pdk.sh
 set -e
 
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -34,13 +33,8 @@ fi
 
 cd open_pdks
 
-# SKY130만 빌드 (GF180은 선택, SETUP_GF180=1 환경변수로 활성화)
-echo "[1/2] Configuring open_pdks (SKY130${SETUP_GF180:+ + GF180})..."
-if [ "${SETUP_GF180:-0}" = "1" ]; then
-    ./configure --prefix="$PDK_DEST" --enable-sky130-pdk --enable-gf180mcu-pdk
-else
-    ./configure --prefix="$PDK_DEST" --enable-sky130-pdk
-fi
+echo "[1/2] Configuring open_pdks (SKY130 only)..."
+./configure --prefix="$PDK_DEST" --enable-sky130-pdk
 
 echo "[2/2] Building PDK (default SKY130, ~30-60 min)..."
 # RF/analog cell 일부가 누락되어 make가 실패할 수 있으나 digital flow에는 영향 없음.

@@ -52,7 +52,7 @@ Open-source RTL-to-GDS training workspace using `Verilog + Verilator + Yosys + O
 | Netgen | 1.5 | LVS |
 | open_pdks | current local build | SKY130 installation |
 
-PDK는 기본적으로 `SKY130HD`를 사용합니다. 일부 문서와 로그에는 `GF180` 비교 실험이 포함되지만, 기본 재현 경로는 `SKY130HD` 하나에 맞춰져 있습니다.
+이 저장소의 기본 PDK는 `SKY130HD` 하나입니다.
 
 ## Reproducibility
 
@@ -196,7 +196,6 @@ designs/          RTL designs and Makefile-based local simulation
   04_systolic/      2x2 systolic array
   05_picorv32/      RISC-V CPU
   06_soc/           PicoRV32 + SRAM SoC
-  legacy_gcd/       Archived ORFS example wrapper/config
 
 training/         Guided numbered scripts for end-to-end learning
 runs/             User-owned run workspaces and generic template
@@ -250,7 +249,6 @@ results/          Generated outputs
 
 - fully automated DRC/LVS closure는 아직 보강 여지가 있습니다.
 - OpenLane 비교는 이 저장소의 기본 문서 세트에서 제외했고, 필요하면 위 External References의 upstream 자료를 직접 보는 편이 낫습니다.
-- `designs/legacy_gcd`는 보관용 예제로 남아 있으며, 기본 학습 순서에는 포함되지 않습니다.
 
 ## License
 

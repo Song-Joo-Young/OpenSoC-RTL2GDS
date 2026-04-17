@@ -99,7 +99,6 @@ flow/
 │   └── ...
 ├── platforms/            PDK별 설정
 │   ├── sky130hd/         lib/, lef/, gds/, config.mk, pdn.tcl, ...
-│   ├── gf180/
 │   ├── asap7/
 │   ├── nangate45/
 │   └── ...
@@ -224,7 +223,6 @@ OpenRAM/
 │   ├── sky130/           SkyWater 130nm
 │   │   ├── custom/       커스텀 비트셀, 레플리카 셀
 │   │   └── tech/         디자인 룰, 레이어 정의
-│   ├── gf180mcu/         GlobalFoundries 180nm
 │   ├── scn3me_subm/      SCMOS 3-metal
 │   └── scn4m_subm/       SCMOS 4-metal
 │
@@ -467,7 +465,7 @@ netgen -batch lvs \
 
 > Repository: [RTimothyEdwards/open_pdks](https://github.com/RTimothyEdwards/open_pdks)
 
-PDK 자체가 아니라 **PDK 설치 자동화 도구**. SkyWater, GF180 등의 오픈소스 PDK를
+PDK 자체가 아니라 **PDK 설치 자동화 도구**. SkyWater 등의 오픈소스 PDK를
 오픈소스 EDA 도구(Magic, Netgen, KLayout, librelane)에서 사용 가능한 형태로 변환.
 
 ### 설치 과정 (단계별)
@@ -544,12 +542,6 @@ Warning: cell "..." placed on top of itself. Ignoring the extra one.
 Input off lambda grid by 2/5; snapped to grid.
 ```
 → sky130_fd_io (I/O 셀) GDS의 upstream 품질 이슈. 자동 snap/ignore로 처리됨.
-
-**③ GF180 klayout tech 누락**
-```
-cp: cannot stat '.../gf180mcu_ws_klayout/.../klayout/tech': No such file or directory
-```
-→ open_pdks upstream 이슈. SKY130만 설치하면 회피 가능.
 
 ### 핵심 검증 (설치 성공 여부)
 
