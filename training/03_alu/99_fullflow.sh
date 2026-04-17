@@ -14,14 +14,11 @@ $MAKE_CMD clean_all 2>/dev/null
 mkdir -p "$REPORTS"
 touch "$REPORTS/congestion.rpt"
 
-# Full flow
-if ! $MAKE_CMD; then
-    echo ""
-    echo "[WARN] ORFS built-in GDS merge failed."
-    echo "       Known issue: duplicate MACRO names in merged.lef during do-gds-merged."
-    echo "       Checking whether 6_final.def was already generated for manual merge..."
-    [ -f "$RESULTS/6_final.def" ] || exit 1
-fi
+# Run ORFS only through final_report.
+# Avoid the built-in KLayout merge, which trips on duplicate MACRO names in merged.lef.
+$MAKE_CMD synth floorplan place cts route
+$MAKE_CMD do-6_1_fill do-6_1_fill.sdc do-6_final.sdc do-6_report
+[ -f "$RESULTS/6_final.def" ]
 
 # GDS
 cat platforms/$PLATFORM/lef/sky130_fd_sc_hd.tlef \

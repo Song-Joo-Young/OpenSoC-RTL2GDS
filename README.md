@@ -8,12 +8,12 @@ Sample 디자인부터 RISC-V SoC 디자인까지 단계적으로 확장하는 �
 
 | Phase | Design | PDK | Area | Power | Timing | GDS |
 |-------|--------|-----|------|-------|--------|-----|
-| 1 | GCD (예제, 264 cells) | sky130hd | 3,872 µm² | 2.64mW | WNS -0.50ns | 904KB |
+| 1 | Counter4 training | sky130hd | 235 µm² | - | met | 114KB |
 | 2 | UART TX + FIFO + ICG | sky130hd | 2,626 µm² | - | met | 791KB |
 | 3 | ALU 8-bit pipelined | sky130hd | ~1,600 µm² | 0.66mW | met | 750KB |
-| 4 | PicoRV32 (RV32I) | sky130hd | 102,600 µm² | 16.0mW | +4.75ns | 12MB |
-| 5 | PicoRV32 + SRAM 2KB | sky130hd | 544,466 µm² | 18.2mW | +7.02ns | 32MB |
-| 6 | 2x2 Systolic Array | sky130hd | 17,224 µm² | 7.73mW | +4.02ns | 2.5MB |
+| 4 | 2x2 Systolic Array | sky130hd | 17,229 µm² | - | +4.02ns | 2.5MB |
+| 5 | PicoRV32 (RV32I) | sky130hd | 102,600 µm² | 16.0mW | +4.75ns | 12MB |
+| 6 | PicoRV32 + SRAM 2KB | sky130hd | 544,466 µm² | 18.2mW | +7.02ns | 32MB |
 
 ## Quick Start
 
@@ -51,8 +51,7 @@ bash 99_fullflow.sh
 | `training/01_counter4` | 첫 RTL-to-GDS 실습 | `bash training/01_counter4/01_sim.sh` | `bash training/01_counter4/99_fullflow.sh` |
 | `training/02_uart_tx` | 멀티파일 RTL + `.f` + ICG 실습 | `bash training/02_uart_tx/01_sim.sh` | `bash training/02_uart_tx/99_fullflow.sh` |
 | `training/03_alu` | pipelined ALU full training track | `bash training/03_alu/01_sim.sh` | `bash training/03_alu/99_fullflow.sh` |
-| `designs/03_alu` | pipelined ALU source-only path | `make -C designs/03_alu sim` | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/alu/config.mk` |
-| `designs/04_systolic` | 2x2 systolic array | `make -C designs/04_systolic sim` | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/systolic_2x2/config.mk` |
+| `training/04_systolic` | systolic array training track | `bash training/04_systolic/01_sim.sh` | `bash training/04_systolic/99_fullflow.sh` |
 | `designs/05_picorv32` | RISC-V core | - | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/picorv32/config.mk` |
 | `designs/06_soc` | PicoRV32 + SRAM macro | - | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/picosoc_mini/config.mk` |
 
@@ -135,7 +134,6 @@ RTL (Verilog)
 
 ```
 designs/          RTL designs (git tracked)
-  01_gcd/           GCD example
   02_uart_tx/       UART TX + FIFO + ICG
   03_alu/           Pipelined ALU
   04_systolic/      2x2 systolic array
