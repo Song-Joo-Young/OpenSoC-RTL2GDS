@@ -4,7 +4,7 @@ This file provides guidance to Claude Code when working in this repository. It c
 
 ## Repository Overview
 
-This is an RTL-to-GDS training repository using Verilog RTL, Verilator simulation, and OpenROAD-flow-scripts. Most active work happens in `designs/`, `training/`, `scripts/`, and `docs/`.
+This is an RTL-to-GDS training repository using Verilog RTL, Verilator simulation, and OpenROAD-flow-scripts. Most active work happens in `designs/`, `training/`, `scripts/`, and `docs/`. Numbering is aligned across `designs/` and `training/` from `01_counter4` through `06_soc`; older examples live under `designs/legacy_*`.
 
 ## Where to Edit
 

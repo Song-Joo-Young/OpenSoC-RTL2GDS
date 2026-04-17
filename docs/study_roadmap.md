@@ -13,7 +13,7 @@
 | 1 | [blog_rtl_to_gds.md](blog_rtl_to_gds.md) Part 1~2 | 전체 flow 개요, 도구별 역할, 상용 도구 대응표 | 15분 |
 | 2 | [OpenLane Paper](OpenLane_paper.pdf) | 실제 tapeout 사례 (striVe SoC), flow 다이어그램 | 30분 |
 | 3 | [tool_analysis.md](tool_analysis.md) §1 OpenROAD | OpenROAD 내부 모듈 37개 구조 | 20분 |
-| 4 | [evaluation.md](evaluation.md) | 프로젝트 전체 평가, 뭘 잘했고 뭘 놓쳤는지 | 15분 |
+| 4 | [progress.md](progress.md) | 프로젝트 단계별 결과와 실제 수치 비교 | 15분 |
 
 **이 단계 후 알게 되는 것:**
 - Yosys = 합성, OpenROAD = PnR, Magic = DRC, Netgen = LVS
@@ -35,9 +35,9 @@
 
 **실습 파일:**
 ```
-training/01_counter4/src/counter4.v      ← RTL (직접 수정해보기)
-training/01_counter4/tb/tb_counter4.cpp  ← 테스트벤치
-training/01_counter4/constraints/        ← SDC (clock period 바꿔보기)
+designs/01_counter4/src/counter4.v       ← RTL (직접 수정해보기)
+designs/01_counter4/tb/tb_counter4.cpp   ← 테스트벤치
+designs/01_counter4/constraints/         ← SDC (clock period 바꿔보기)
 ```
 
 **이 단계 후 할 수 있는 것:**
@@ -56,7 +56,7 @@ training/01_counter4/constraints/        ← SDC (clock period 바꿔보기)
 | 1 | `training/02_uart_tx/` | UART TX + FIFO + ICG: multi-file RTL, clock-gate 관찰 |
 | 2 | `training/03_alu/` | pipelined ALU: ~100 cells, pipeline 효과 |
 | 3 | `training/04_systolic/` | 2x2 systolic: 1605 cells, 곱셈기 power 지배 |
-| 4 | `designs/05_picorv32/` | RISC-V CPU: ~3K cells, clock power 지배 |
+| 4 | `training/05_picorv32/` | RISC-V CPU: ~3K cells, clock power 지배 |
 | 5 | `designs/06_soc/` | SoC+SRAM: macro integration, SRAM power 50% |
 | 6 | [progress.md](progress.md) | 전체 수치 비교 표 |
 
@@ -142,23 +142,23 @@ docs/
 ├── training_guide.md     ← 실습용: Part 1~14 step-by-step
 ├── dual_track_guide.md   ← ORFS vs OpenLane 비교
 ├── tool_analysis.md      ← OpenROAD/ORFS/OpenRAM 내부 구조
-├── progress.md           ← Phase 0~6 수치 결과
-└── evaluation.md         ← 독립 평가 + 개선 권장사항
+└── progress.md           ← 단계별 실측 결과와 비교 표
 
 designs/                  ← 디자인 소스 (난이도 순)
-├── 01_gcd/               ORFS 예제
+├── 01_counter4/          Level 2
 ├── 02_uart_tx/           Level 2
 ├── 03_alu/               Level 3
 ├── 04_systolic/          Level 3
 ├── 05_picorv32/          Level 3
 ├── 06_soc/               Level 3~4
-└── legacy_counter/       보관용 예제
+└── legacy_gcd/           보관용 예제
 
 training/
 ├── 01_counter4/          ← Level 2 실습 전용
 ├── 02_uart_tx/           ← 후속 실습
 ├── 03_alu/               ← 후속 실습
-└── 04_systolic/          ← 후속 실습
+├── 04_systolic/          ← 후속 실습
+└── 05_picorv32/          ← 후속 실습
 ```
 
 ---

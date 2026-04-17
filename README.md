@@ -86,7 +86,7 @@ source env.sh
 cp -r runs/template_rtl runs/my_design
 cd runs/my_design
 
-# 1) design.cfg 수정
+# 1) design.cfg 에서 RUN_NAME / TOP_MODULE 수정
 # 2) rtl.f 수정
 # 3) src/, constraints/ 채우기
 # 4) 테스트벤치가 있으면 tb/와 ENABLE_SIM=1 설정
@@ -98,6 +98,7 @@ bash 99_fullflow.sh
 ```
 
 즉, `training/`은 curated example, `runs/`는 사용자 커스텀 run workspace로 보면 됩니다.
+이 템플릿은 `RUN_NAME`(run 식별자)와 `TOP_MODULE`(실제 RTL top)를 분리해서 다룹니다.
 
 ### 3. Step-by-Step Inspection
 
@@ -176,13 +177,13 @@ RTL (Verilog)
 
 ```text
 designs/          RTL designs and Makefile-based local simulation
-  01_gcd/           ORFS example wrapper/config
+  01_counter4/      Smallest training-aligned counter example
   02_uart_tx/       UART TX + FIFO + ICG
   03_alu/           Pipelined ALU
   04_systolic/      2x2 systolic array
   05_picorv32/      RISC-V CPU
   06_soc/           PicoRV32 + SRAM SoC
-  legacy_counter/   Archived simple counter example
+  legacy_gcd/       Archived ORFS example wrapper/config
 
 training/         Guided numbered scripts for end-to-end learning
 runs/             User-owned run workspaces and generic template
@@ -198,13 +199,11 @@ results/          Generated outputs
 | Document | Purpose |
 |----------|---------|
 | [docs/training_guide.md](docs/training_guide.md) | step-by-step training guide |
-| [docs/user_walkthrough.md](docs/user_walkthrough.md) | first-user walkthrough and friction checklist |
 | [docs/study_roadmap.md](docs/study_roadmap.md) | recommended reading order |
 | [docs/dual_track_guide.md](docs/dual_track_guide.md) | ORFS vs OpenLane comparison |
 | [docs/tool_analysis.md](docs/tool_analysis.md) | OpenROAD / ORFS / OpenRAM internals |
 | [runs/template_rtl/README.md](runs/template_rtl/README.md) | generic run directory for your own RTL |
 | [docs/progress.md](docs/progress.md) | measured phase-by-phase results |
-| [docs/evaluation.md](docs/evaluation.md) | current workspace-oriented review |
 | [docs/blog_rtl_to_gds.md](docs/blog_rtl_to_gds.md) | long-form narrative walkthrough |
 
 ## About `sram-lib-gen`

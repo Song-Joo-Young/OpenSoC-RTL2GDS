@@ -51,7 +51,7 @@ python3.12 -m openlane --version  # 2.3.10
 
 ```bash
 # 이미 만들어진 training 디자인 사용
-cat training/01_counter4/src/counter4.v
+cat designs/01_counter4/src/counter4.v
 ```
 
 ```verilog
@@ -78,7 +78,7 @@ endmodule
 cd training/01_counter4
 verilator --cc --exe --build -Wno-fatal \
   -Mdir build --top-module counter4 \
-  src/counter4.v tb/tb_counter4.cpp
+  ../../designs/01_counter4/src/counter4.v ../../designs/01_counter4/tb/tb_counter4.cpp
 ./build/Vcounter4
 # → ALL TESTS PASSED
 ```
@@ -110,7 +110,7 @@ export EQUIVALENCE_CHECK = 0
 ```bash
 mkdir -p openlane_run/counter4
 cd openlane_run/counter4
-cp ../../training/01_counter4/src/counter4.v .
+cp ../../designs/01_counter4/src/counter4.v .
 ```
 
 config.json:
@@ -374,7 +374,7 @@ Step 8: 비교 ───────┴─────────────�
 ### 난이도 순서
 1. **counter4** (이 가이드) — 가장 간단, flow 검증용
 2. **8-bit ALU** (`training/03_alu/`) — 조합+순차 혼합
-3. **PicoRV32** (`designs/05_picorv32/`) — 실제 CPU
+3. **PicoRV32** (`training/05_picorv32/`) — 실제 CPU
 4. **SoC + SRAM** (`designs/06_soc/`) — macro 포함
 
 ### 실험 아이디어
@@ -393,4 +393,4 @@ Step 8: 비교 ───────┴─────────────�
 | [Blog Post](blog_rtl_to_gds.md) | 전체 flow 포스팅용 (실측 수치) |
 | [Tool Analysis](tool_analysis.md) | OpenROAD/ORFS/OpenRAM 내부 구조 |
 | [Training Guide](training_guide.md) | 환경 구축부터 단계별 실습까지 |
-| [Evaluation](evaluation.md) | 프로젝트 평가 + 개선점 |
+| [Progress](progress.md) | 단계별 결과 비교와 현재 상태 |
