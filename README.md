@@ -4,6 +4,8 @@ Open-source RTL-to-GDS training workspace using `Verilog + Verilator + Yosys + O
 
 이 저장소는 작은 RTL 예제에서 시작해 `UART -> ALU -> systolic array -> PicoRV32 -> SRAM-integrated SoC`로 확장하면서, 오픈소스 디지털 ASIC flow를 실제 결과물 중심으로 재현하는 것을 목표로 합니다.
 
+처음 시작할 때는 `designs/01_counter4`에서 RTL을 보고, `training/01_counter4`에서 번호별 스크립트를 실행하면 됩니다.
+
 ## Abstract
 
 상용 EDA 대신 오픈소스 스택만으로도 RTL에서 GDS-II까지 일관된 flow를 구성할 수 있는지, 그리고 디자인 복잡도가 증가할 때 면적/전력/타이밍 특성이 어떻게 변하는지를 단계적으로 관찰하기 위한 실습형 저장소입니다.
@@ -67,7 +69,16 @@ source env.sh
 
 처음 설치에서 시간이 가장 오래 걸리는 구간은 `setup_pdk.sh` 입니다. 첫 설치 후에는 대부분의 training run이 수초~수분 내에 끝납니다.
 
-### 2. Recommended Reader Path
+### 2. Start Here
+
+가장 자연스러운 입문 순서는 아래와 같습니다.
+
+1. `designs/01_counter4/src/counter4.v`로 가장 작은 RTL을 읽습니다.
+2. `bash training/01_counter4/01_sim.sh`로 기능 검증을 봅니다.
+3. `bash training/01_counter4/99_fullflow.sh`로 첫 GDS를 만듭니다.
+4. 이후 `02_uart_tx -> 03_alu -> 04_systolic -> 05_picorv32` 순서로 확장합니다.
+
+### 3. Recommended Reader Path
 
 | Stage | Goal | Command |
 |------|------|---------|
@@ -75,10 +86,12 @@ source env.sh
 | `training/02_uart_tx` | multi-file RTL, filelist, ICG | `bash training/02_uart_tx/01_sim.sh` then `bash training/02_uart_tx/99_fullflow.sh` |
 | `training/03_alu` | pipelined datapath | `bash training/03_alu/01_sim.sh` then `bash training/03_alu/99_fullflow.sh` |
 | `training/04_systolic` | arithmetic-heavy accelerator-style block | `bash training/04_systolic/01_sim.sh` then `bash training/04_systolic/99_fullflow.sh` |
-| `designs/05_picorv32` | CPU-scale ORFS run | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/picorv32/config.mk` |
+| `training/05_picorv32` | CPU-scale training track | `bash training/05_picorv32/01_sim.sh` then `bash training/05_picorv32/99_fullflow.sh` |
 | `designs/06_soc` | macro-integrated SoC | `cd $ORFS/flow && make DESIGN_CONFIG=./designs/sky130hd/picosoc_mini/config.mk` |
 
-### 2a. Bring Your Own RTL
+`01`부터 `05`까지는 `training/`에서 실행하고, 실제 RTL과 제약은 같은 번호의 `designs/`에서 읽는 구조입니다. `06_soc`부터는 training wrapper 없이 ORFS 설정을 직접 사용합니다.
+
+### 3a. Bring Your Own RTL
 
 임의의 RTL이나 외부 open-source RTL을 training 방식으로 태우고 싶다면 `runs/template_rtl/`를 복제해서 쓰면 됩니다.
 
@@ -100,7 +113,7 @@ bash 99_fullflow.sh
 즉, `training/`은 curated example, `runs/`는 사용자 커스텀 run workspace로 보면 됩니다.
 이 템플릿은 `RUN_NAME`(run 식별자)와 `TOP_MODULE`(실제 RTL top)를 분리해서 다룹니다.
 
-### 3. Step-by-Step Inspection
+### 4. Step-by-Step Inspection
 
 `training/01_counter4/` 에서는 아래 번호별 스크립트로 각 단계를 따로 볼 수 있습니다.
 
@@ -121,12 +134,12 @@ bash training/01_counter4/11_signoff.sh
 
 ## Flow Assessment
 
-현재 저장소 기준으로 사용자가 하나씩 따라가기 가장 매끄러운 구간은 `training/01_counter4` 부터 `training/04_systolic` 까지입니다.
+현재 저장소 기준으로 사용자가 하나씩 따라가기 가장 매끄러운 구간은 `training/01_counter4` 부터 `training/05_picorv32` 까지입니다.
 
 ### Smooth Path
 
 - 각 training 디렉토리에 `design.cfg`, `00_clean.sh`, `01_sim.sh`, `99_fullflow.sh`가 일관된 형태로 존재합니다.
-- `designs/02_uart_tx`, `designs/03_alu`, `designs/04_systolic`는 `Makefile` 기반 로컬 simulation 경로도 별도로 제공합니다.
+- `designs/01_counter4`, `designs/02_uart_tx`, `designs/03_alu`, `designs/04_systolic`는 `Makefile` 기반 로컬 simulation 경로도 별도로 제공합니다.
 - `env.sh`가 ORFS, Yosys, OpenRAM 주요 경로를 한 번에 잡아줍니다.
 
 ### Current Friction Points
@@ -170,7 +183,7 @@ RTL (Verilog)
 | `training/02_uart_tx` | filelist-based RTL, FIFO, serializer, ICG |
 | `training/03_alu` | 2-stage pipelined datapath |
 | `training/04_systolic` | multiplier-heavy accelerator block |
-| `designs/05_picorv32` | CPU-scale open-source RTL |
+| `training/05_picorv32` | CPU-scale open-source RTL |
 | `designs/06_soc` | SRAM macro integration and macro-dominant floorplan |
 
 ## Directory Structure
@@ -219,9 +232,9 @@ results/          Generated outputs
 
 ## Known Limitations
 
-- Phase 1 `gcd`는 intentional tight timing experiment라 setup violation이 남아 있습니다.
 - fully automated DRC/LVS closure는 아직 보강 여지가 있습니다.
 - OpenLane 결과와의 정량 비교는 문서에 가이드가 있지만 기본 flow의 일부는 아닙니다.
+- `designs/legacy_gcd`는 보관용 예제로 남아 있으며, 기본 학습 순서에는 포함되지 않습니다.
 
 ## License
 

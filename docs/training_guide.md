@@ -5,6 +5,7 @@
 > `training/05_picorv32/`는 로컬 testbench 대신 Verilator lint/smoke check로 시작한다.
 > `designs/06_soc/`는 별도 training 스크립트 없이 ORFS 설정으로 직접 재현한다.
 > 각 training 트랙의 RTL, testbench, SDC 원본은 같은 번호의 `designs/` 디렉토리를 기준으로 관리한다.
+> 실습할 때는 `training/`에서 실행하고, 코드와 제약을 읽거나 수정할 때는 대응하는 `designs/`를 보면 된다.
 
 ---
 
