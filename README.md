@@ -212,12 +212,28 @@ results/          Generated outputs
 | Document | Purpose |
 |----------|---------|
 | [docs/training_guide.md](docs/training_guide.md) | step-by-step training guide |
-| [docs/study_roadmap.md](docs/study_roadmap.md) | recommended reading order |
-| [docs/dual_track_guide.md](docs/dual_track_guide.md) | ORFS vs OpenLane comparison |
 | [docs/tool_analysis.md](docs/tool_analysis.md) | OpenROAD / ORFS / OpenRAM internals |
 | [runs/template_rtl/README.md](runs/template_rtl/README.md) | generic run directory for your own RTL |
 | [docs/progress.md](docs/progress.md) | measured phase-by-phase results |
 | [docs/blog_rtl_to_gds.md](docs/blog_rtl_to_gds.md) | long-form narrative walkthrough |
+
+## External References
+
+핵심 upstream 프로젝트와 reference는 아래를 기준으로 보면 됩니다.
+
+- [OpenROAD](https://github.com/The-OpenROAD-Project/OpenROAD) — physical design engine
+- [OpenROAD-flow-scripts](https://github.com/The-OpenROAD-Project/OpenROAD-flow-scripts) — Makefile-based RTL-to-GDS flow
+- [OpenSTA](https://github.com/The-OpenROAD-Project/OpenSTA) — static timing analysis
+- [Yosys](https://github.com/YosysHQ/yosys) — RTL synthesis
+- [Verilator](https://github.com/verilator/verilator) — RTL simulation
+- [KLayout](https://github.com/KLayout/klayout) — GDS viewing and merge support
+- [Magic](https://github.com/RTimothyEdwards/magic) — DRC and extraction
+- [Netgen](https://github.com/RTimothyEdwards/netgen) — LVS
+- [open_pdks](https://github.com/RTimothyEdwards/open_pdks) — open-source PDK packaging
+- [SkyWater SKY130 PDK](https://github.com/google/skywater-pdk) — base process data
+- [OpenRAM](https://github.com/VLSIDA/OpenRAM) — SRAM compiler
+- [PicoRV32](https://github.com/YosysHQ/picorv32) — RISC-V core used in track 05
+- [OpenLane Paper (ICCAD 2020)](https://doi.org/10.1145/3400302.3415735) — representative open-source tapeout reference
 
 ## About `sram-lib-gen`
 
@@ -233,7 +249,7 @@ results/          Generated outputs
 ## Known Limitations
 
 - fully automated DRC/LVS closure는 아직 보강 여지가 있습니다.
-- OpenLane 결과와의 정량 비교는 문서에 가이드가 있지만 기본 flow의 일부는 아닙니다.
+- OpenLane 비교는 이 저장소의 기본 문서 세트에서 제외했고, 필요하면 위 External References의 upstream 자료를 직접 보는 편이 낫습니다.
 - `designs/legacy_gcd`는 보관용 예제로 남아 있으며, 기본 학습 순서에는 포함되지 않습니다.
 
 ## License

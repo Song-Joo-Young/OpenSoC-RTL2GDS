@@ -71,6 +71,21 @@ source env.sh
 
 권장 순서는 `01_counter4 -> 02_uart_tx -> 03_alu -> 04_systolic -> 05_picorv32 -> 06_soc` 이다.
 
+### Upstream References
+
+- [OpenROAD](https://github.com/The-OpenROAD-Project/OpenROAD)
+- [OpenROAD-flow-scripts](https://github.com/The-OpenROAD-Project/OpenROAD-flow-scripts)
+- [OpenSTA](https://github.com/The-OpenROAD-Project/OpenSTA)
+- [Yosys](https://github.com/YosysHQ/yosys)
+- [Verilator](https://github.com/verilator/verilator)
+- [KLayout](https://github.com/KLayout/klayout)
+- [Magic](https://github.com/RTimothyEdwards/magic)
+- [Netgen](https://github.com/RTimothyEdwards/netgen)
+- [open_pdks](https://github.com/RTimothyEdwards/open_pdks)
+- [SkyWater SKY130 PDK](https://github.com/google/skywater-pdk)
+- [OpenRAM](https://github.com/VLSIDA/OpenRAM)
+- [PicoRV32](https://github.com/YosysHQ/picorv32)
+
 ---
 
 ## Part 1: 개념
